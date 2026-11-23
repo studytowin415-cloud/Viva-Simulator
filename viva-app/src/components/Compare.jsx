@@ -1,95 +1,128 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
-
-const ROWS = [
-  { label: 'Questions based on your project',       trad: false, vs: true  },
-  { label: 'Instant answer feedback',               trad: false, vs: true  },
-  { label: 'Identifies knowledge gaps automatically',trad: false, vs: true  },
-  { label: 'Adapts difficulty to your progress',    trad: false, vs: true  },
-  { label: 'Available any time, any device',        trad: 'Limited', vs: 'Always' },
-  { label: 'Performance tracking across sessions',  trad: false, vs: true  },
-  { label: 'Personalised practice plan',            trad: false, vs: true  },
-]
-
-function Cell({ val, isVs }) {
-  if (val === true)  return <span style={{ color: isVs ? '#4ADE80' : '#4ADE80', fontSize:'1.1rem', fontWeight:800 }}>✓</span>
-  if (val === false) return <span style={{ color: 'rgba(255,255,255,0.2)', fontSize:'1rem' }}>✕</span>
-  return <span style={{ fontSize:'0.8rem', fontWeight:600, color: isVs ? '#FF8A70' : 'rgba(255,255,255,0.3)' }}>{val}</span>
-}
+import React from 'react';
+import { Check, X, Shield, Cpu, Compass, Layers, Award } from 'lucide-react';
 
 export default function Compare() {
-  const hRef = useRef(null)
-  const hInView = useInView(hRef, { once:true, margin:'-80px' })
+  const rows = [
+    { feature: "Grounding in Your Actual Project", trad: "Generic generic textbook questions", vs: "100% RAG-retrieved from your code & doc" },
+    { feature: "Feedback Speed", trad: "Days later (or never before actual exam)", vs: "Instantaneous with line-item critique" },
+    { feature: "Examiner Adaptation", trad: "Rigid memorization checklist", vs: "Adapts dynamically to student depth" },
+    { feature: "Knowledge Gap Diagnostics", trad: "Vague 'needs improvement' comments", vs: "Explicit conceptual gap categorization" },
+    { feature: "Re-examination of Weak Spots", trad: "Rarely done before final defense", vs: "Automated continuous re-viva drills" },
+    { feature: "Availability & Stress Level", trad: "High anxiety mock once a semester", vs: "Unlimited low-pressure practice anytime" }
+  ];
+
+  const pillars = [
+    { name: "Intelligence", sub: "Learns and adapts", num: "01" },
+    { name: "Trust", sub: "Reliable and transparent", num: "02" },
+    { name: "Innovation", sub: "Built for the future", num: "03" },
+    { name: "Simplicity", sub: "Easy to use", num: "04" },
+    { name: "Impact", sub: "Better learners, stronger tomorrow", num: "05" }
+  ];
 
   return (
-    <section id="compare" style={{
-      padding:'120px 32px',
-      background:'linear-gradient(180deg,#0D0D0D 0%,#0a0a10 100%)',
-      borderTop:'1px solid rgba(255,255,255,0.06)',
-    }}>
-      <div style={{ maxWidth:900, margin:'0 auto' }}>
-        <div ref={hRef} style={{ textAlign:'center', marginBottom:56 }}>
-          <motion.p
-            initial={{ opacity:0, y:16 }} animate={hInView?{opacity:1,y:0}:{}}
-            transition={{ duration:0.5 }}
-            style={{ fontSize:'0.72rem', fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'rgba(255,255,255,0.3)', marginBottom:16 }}
-          >Why Choose Viva Simulator</motion.p>
-          <motion.h2
-            initial={{ opacity:0, y:24 }} animate={hInView?{opacity:1,y:0}:{}}
-            transition={{ duration:0.6, delay:0.1 }}
-            style={{ fontSize:'clamp(1.8rem,3.5vw,2.6rem)', fontWeight:900, letterSpacing:'-0.03em', color:'white', marginBottom:16 }}
-          >Traditional prep vs.<br/><span style={{ background:'linear-gradient(135deg,#2563EB,#FF6B4A)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>AI-assisted prep.</span></motion.h2>
+    <section id="comparison" className="py-28 bg-[#090A0D] border-t border-white/10">
+      <div className="max-w-6xl mx-auto px-6">
+        
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#181C24] border border-white/10 text-sand-300 text-xs font-mono mb-4 uppercase tracking-widest">
+            <span>Evaluation Comparison</span>
+          </div>
+          <h2 className="font-display font-black text-3xl sm:text-5xl text-sand-50 tracking-tight mb-4">
+            TRADITIONAL PREP VS. AI DEFENSE
+          </h2>
         </div>
 
-        <motion.div
-          initial={{ opacity:0, y:32 }}
-          whileInView={{ opacity:1, y:0 }}
-          viewport={{ once:true, margin:'-60px' }}
-          transition={{ duration:0.7, ease:[0.22,1,0.36,1] }}
-          style={{
-            background:'rgba(255,255,255,0.02)',
-            border:'1px solid rgba(255,255,255,0.08)',
-            borderRadius:20, overflow:'hidden',
-          }}
-        >
-          {/* Header */}
-          <div style={{
-            display:'grid', gridTemplateColumns:'1.8fr 1fr 1fr',
-            padding:'16px 28px', background:'rgba(255,255,255,0.03)',
-            borderBottom:'1px solid rgba(255,255,255,0.08)',
-          }}>
-            <div style={{ fontSize:'0.72rem', fontWeight:700, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', letterSpacing:'0.08em' }}>Capability</div>
-            <div style={{ fontSize:'0.72rem', fontWeight:700, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', letterSpacing:'0.08em', textAlign:'center' }}>Traditional</div>
-            <div style={{
-              fontSize:'0.72rem', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em', textAlign:'center',
-              background:'linear-gradient(135deg,#2563EB,#FF6B4A)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
-            }}>Viva Simulator</div>
+        {/* Comparison Table */}
+        <div className="charcoal-panel rounded-2xl overflow-hidden border border-white/15 mb-24">
+          <div className="grid grid-cols-12 bg-[#141720] p-5 border-b border-white/10 font-mono text-xs uppercase tracking-wider text-sand-muted font-bold">
+            <div className="col-span-5 sm:col-span-4">Evaluation Metric</div>
+            <div className="col-span-3 sm:col-span-4">Traditional Method</div>
+            <div className="col-span-4 text-electric-light">Viva Simulator</div>
           </div>
 
-          {/* Rows */}
-          {ROWS.map((row, i) => (
-            <motion.div
-              key={row.label}
-              initial={{ opacity:0, x:-20 }}
-              whileInView={{ opacity:1, x:0 }}
-              viewport={{ once:true, margin:'-40px' }}
-              transition={{ duration:0.5, delay:i*0.06 }}
-              style={{
-                display:'grid', gridTemplateColumns:'1.8fr 1fr 1fr',
-                padding:'16px 28px',
-                borderBottom: i < ROWS.length-1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-                transition:'background 0.2s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.03)'}
-              onMouseLeave={e => e.currentTarget.style.background='transparent'}
+          {rows.map((r, i) => (
+            <div 
+              key={i}
+              className={`grid grid-cols-12 p-5 items-center text-xs sm:text-sm border-b border-white/5 hover:bg-white/[0.02] transition-colors ${
+                i % 2 === 0 ? 'bg-transparent' : 'bg-[#0E1015]/60'
+              }`}
             >
-              <span style={{ fontSize:'0.875rem', color:'rgba(255,255,255,0.6)', fontWeight:500, alignSelf:'center' }}>{row.label}</span>
-              <div style={{ display:'flex', justifyContent:'center', alignItems:'center' }}><Cell val={row.trad} isVs={false} /></div>
-              <div style={{ display:'flex', justifyContent:'center', alignItems:'center' }}><Cell val={row.vs} isVs={true} /></div>
-            </motion.div>
+              <div className="col-span-5 sm:col-span-4 font-bold text-sand-100 pr-2">
+                {r.feature}
+              </div>
+              <div className="col-span-3 sm:col-span-4 text-sand-muted pr-2 flex items-center gap-2">
+                <span className="text-sand-muted font-mono font-bold">•</span>
+                <span className="text-xs">{r.trad}</span>
+              </div>
+              <div className="col-span-4 text-sand-200 font-semibold flex items-center gap-2 text-xs">
+                <Check className="w-4 h-4 text-electric-light shrink-0" />
+                <span>{r.vs}</span>
+              </div>
+            </div>
           ))}
-        </motion.div>
+        </div>
+
+        {/* PPT Triad: Goal, Solution, Vision */}
+        <div id="vision" className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-20">
+          <div className="charcoal-panel p-7 rounded-2xl border-t-4 border-t-sand-300">
+            <span className="text-xs font-mono text-sand-muted uppercase tracking-widest block mb-3 font-semibold">01 // Purpose</span>
+            <h3 className="font-display font-black text-xl text-sand-100 mb-3">The Goal</h3>
+            <p className="text-sm text-sand-muted leading-relaxed font-normal">
+              Bridge the gap between building a project and confidently explaining it during high-stakes university and enterprise defenses.
+            </p>
+          </div>
+
+          <div className="charcoal-panel p-7 rounded-2xl border-t-4 border-t-electric-blue">
+            <span className="text-xs font-mono text-electric-light uppercase tracking-widest block mb-3 font-semibold">02 // Mechanism</span>
+            <h3 className="font-display font-black text-xl text-sand-100 mb-3">The Solution</h3>
+            <p className="text-sm text-sand-muted leading-relaxed font-normal">
+              A continuous, AI-powered feedback loop that understands your project, identifies knowledge gaps, teaches and adapts until you're ready.
+            </p>
+          </div>
+
+          <div className="charcoal-panel p-7 rounded-2xl border-t-4 border-t-sand-400">
+            <span className="text-xs font-mono text-sand-muted uppercase tracking-widest block mb-3 font-semibold">03 // Long-term</span>
+            <h3 className="font-display font-black text-xl text-sand-100 mb-3">Our Vision</h3>
+            <p className="text-sm text-sand-muted leading-relaxed font-normal">
+              Empower students to become confident, technically strong, and independent learners capable of standing behind their work.
+            </p>
+          </div>
+        </div>
+
+        {/* 5 Outcome Pillars from PPT */}
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#181C24] border border-white/10 text-sand-300 text-xs font-mono mb-4 uppercase tracking-widest">
+            <span>Core Values</span>
+          </div>
+          <h3 className="font-display font-black text-2xl sm:text-4xl text-sand-50 tracking-tight">
+            THE FIVE OUTCOME PILLARS
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-16">
+          {pillars.map((p) => (
+            <div
+              key={p.name}
+              className="charcoal-panel p-6 rounded-2xl text-center flex flex-col items-center justify-center hover:-translate-y-1 transition-transform"
+            >
+              <span className="text-xs font-mono font-black text-electric-light mb-1.5">{p.num}</span>
+              <h4 className="font-display font-bold text-sm text-sand-100">{p.name}</h4>
+              <p className="text-[11px] text-sand-muted mt-1 leading-snug">{p.sub}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Editorial Quote */}
+        <div className="text-center">
+          <div className="inline-block p-6 rounded-2xl charcoal-panel border border-white/15 max-w-xl">
+            <p className="text-base sm:text-lg italic text-sand-200 font-normal">
+              "Not just a tool, but a step towards <span className="text-sand-50 font-bold not-italic">confident learners</span>."
+            </p>
+          </div>
+        </div>
+
       </div>
     </section>
-  )
+  );
 }

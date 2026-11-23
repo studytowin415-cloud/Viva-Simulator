@@ -1,49 +1,31 @@
+import React from 'react';
+
 export default function Footer() {
-  const links = [
-    { label: 'About', href: '#about' },
-    { label: 'Features', href: '#features' },
-    { label: 'How it Works', href: '#how' },
-    { label: 'Why Us', href: '#compare' },
-    { label: 'Get Started', href: '#cta' },
-  ]
-
   return (
-    <footer style={{
-      padding: '28px 32px',
-      background: '#0D0D0D',
-      borderTop: '1px solid rgba(255,255,255,0.06)',
-    }}>
-      <div style={{
-        maxWidth: 1140, margin: '0 auto',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        flexWrap: 'wrap', gap: 16,
-      }}>
-        <a href="#" style={{ display:'flex', alignItems:'center', gap:9, textDecoration:'none' }}>
-          <div style={{
-            width:26, height:26, borderRadius:7,
-            background:'linear-gradient(135deg,#2563EB,#FF6B4A)',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            fontWeight:900, fontSize:12, color:'white',
-          }}>V</div>
-          <span style={{ fontWeight:700, fontSize:'0.875rem', color:'rgba(255,255,255,0.6)' }}>Viva Simulator</span>
-        </a>
+    <footer className="py-12 bg-[#07080B] border-t border-white/[0.08] text-sand-muted text-xs">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 rounded-lg bg-[#181C24] border border-white/10 flex items-center justify-center font-mono font-bold text-sand-100 text-xs">
+            VS
+          </div>
+          <div>
+            <div className="font-display font-bold text-sand-200 text-sm tracking-tight">Viva Simulator</div>
+            <div className="text-[10px] text-sand-muted font-mono uppercase tracking-wider">Practice • Improve • Ready</div>
+          </div>
+        </div>
 
-        <nav style={{ display:'flex', gap:24, flexWrap:'wrap' }}>
-          {links.map(l => (
-            <a key={l.label} href={l.href} style={{
-              fontSize:'0.82rem', color:'rgba(255,255,255,0.3)', textDecoration:'none',
-              fontWeight:500, transition:'color 0.2s',
-            }}
-            onMouseEnter={e => e.target.style.color='rgba(255,255,255,0.7)'}
-            onMouseLeave={e => e.target.style.color='rgba(255,255,255,0.3)'}
-            >{l.label}</a>
-          ))}
-        </nav>
+        <div className="flex gap-6 text-xs font-semibold uppercase tracking-wider text-sand-300">
+          <a href="#about" className="hover:text-white transition-colors">About</a>
+          <a href="#loop" className="hover:text-white transition-colors">Feedback Loop</a>
+          <a href="#simulator" className="hover:text-white transition-colors">Simulator</a>
+          <a href="#features" className="hover:text-white transition-colors">Capabilities</a>
+          <a href="#comparison" className="hover:text-white transition-colors">Evaluation</a>
+        </div>
 
-        <span style={{ fontSize:'0.78rem', color:'rgba(255,255,255,0.2)' }}>
-          © 2026 Viva Simulator · Practice. Improve. Be Ready.
-        </span>
+        <div className="font-mono text-[11px] text-sand-muted/80">
+          © 2026 Viva Simulator. Built for confident technical defense.
+        </div>
       </div>
     </footer>
-  )
+  );
 }

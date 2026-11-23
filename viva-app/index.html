@@ -1,12 +1,62 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>viva-app</title>
+    <title>Viva Simulator — Prepare Smarter. Defend With Confidence.</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS with custom Charcoal, Sand & Electric Blue Palette -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              charcoal: {
+                950: '#090A0D',
+                900: '#0E1014',
+                850: '#14171D',
+                800: '#1C2028',
+                750: '#262B36',
+                700: '#333947',
+                muted: '#6C7384',
+              },
+              sand: {
+                50: '#FAF8F5',
+                100: '#F4EFE6',
+                200: '#EAE4D7',
+                300: '#DDD4C3',
+                400: '#C4B79F',
+                muted: '#9E9482',
+              },
+              electric: {
+                blue: '#0062FF',
+                'blue-hover': '#0050D1',
+                light: '#3D88FF',
+                glow: 'rgba(0, 98, 255, 0.4)',
+              }
+            },
+            fontFamily: {
+              sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+              display: ['"Plus Jakarta Sans"', '"Inter"', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+            letterSpacing: {
+              tighter: '-0.04em',
+              tight: '-0.025em',
+            }
+          }
+        }
+      }
+    </script>
   </head>
-  <body>
+  <body class="bg-[#090A0D] text-[#EAE4D7] selection:bg-[#0062FF] selection:text-white font-sans antialiased overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

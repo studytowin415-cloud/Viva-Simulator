@@ -1,406 +1,239 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-
-/* ── Animated floating orbs background ── */
-function Orbs() {
-  return (
-    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-      {/* Blue orb */}
-      <motion.div
-        animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.1, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute', top: '15%', left: '10%',
-          width: 500, height: 500,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(37,99,235,0.35) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-        }}
-      />
-      {/* Coral orb */}
-      <motion.div
-        animate={{ x: [0, -50, 0], y: [0, 60, 0], scale: [1, 1.15, 1] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        style={{
-          position: 'absolute', top: '20%', right: '8%',
-          width: 420, height: 420,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,107,74,0.3) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-        }}
-      />
-      {/* Purple accent */}
-      <motion.div
-        animate={{ x: [0, 30, -30, 0], y: [0, 50, 20, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-        style={{
-          position: 'absolute', bottom: '15%', left: '30%',
-          width: 300, height: 300,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)',
-          filter: 'blur(50px)',
-        }}
-      />
-      {/* Grid overlay */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: `
-          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
-        `,
-        backgroundSize: '60px 60px',
-      }} />
-    </div>
-  )
-}
-
-/* ── Typewriter effect ── */
-function Typewriter({ words }) {
-  const [index, setIndex] = useState(0)
-  const [displayed, setDisplayed] = useState('')
-  const [phase, setPhase] = useState('typing') // typing | pausing | deleting
-
-  useEffect(() => {
-    const word = words[index]
-    let timeout
-
-    if (phase === 'typing') {
-      if (displayed.length < word.length) {
-        timeout = setTimeout(() => setDisplayed(word.slice(0, displayed.length + 1)), 70)
-      } else {
-        timeout = setTimeout(() => setPhase('pausing'), 1800)
-      }
-    } else if (phase === 'pausing') {
-      timeout = setTimeout(() => setPhase('deleting'), 400)
-    } else {
-      if (displayed.length > 0) {
-        timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40)
-      } else {
-        setIndex((index + 1) % words.length)
-        setPhase('typing')
-      }
-    }
-    return () => clearTimeout(timeout)
-  }, [displayed, phase, index, words])
-
-  return (
-    <span style={{ color: '#FF6B4A' }}>
-      {displayed}
-      <span style={{
-        display: 'inline-block', width: 3, height: '0.9em',
-        background: '#FF6B4A', marginLeft: 2, verticalAlign: 'middle',
-        animation: 'blink 1s step-start infinite',
-      }} />
-    </span>
-  )
-}
-
-/* ── Mock Viva Window ── */
-function MockWindow() {
-  const questions = [
-    'Explain how your RAG pipeline retrieves context from project documents.',
-    'What is the role of vector embeddings in your system architecture?',
-    'How does your model evaluate answer quality and assign scores?',
-  ]
-  const [qIdx, setQIdx] = useState(0)
-  const [answer, setAnswer] = useState('')
-  const [score, setScore] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-
-  const handleSubmit = () => {
-    if (!answer.trim()) return
-    setLoading(true)
-    setTimeout(() => {
-      setScore(Math.floor(Math.random() * 25) + 70)
-      setLoading(false)
-      setSubmitted(true)
-    }, 1200)
-  }
-
-  const handleNext = () => {
-    setQIdx((qIdx + 1) % questions.length)
-    setAnswer('')
-    setScore(null)
-    setSubmitted(false)
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40, rotateX: -8 }}
-      animate={{ opacity: 1, y: 0, rotateX: 0 }}
-      transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      style={{ perspective: 1000 }}
-    >
-      <div style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: 20,
-        overflow: 'hidden',
-        backdropFilter: 'blur(20px)',
-        boxShadow: '0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)',
-      }}>
-        {/* Title bar */}
-        <div style={{
-          background: 'rgba(255,255,255,0.05)',
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
-          padding: '12px 16px',
-          display: 'flex', alignItems: 'center', gap: 10,
-        }}>
-          <div style={{ display: 'flex', gap: 7 }}>
-            {['#FF5F57','#FEBC2E','#28C840'].map((c,i) => (
-              <div key={i} style={{ width:12, height:12, borderRadius:'50%', background:c }} />
-            ))}
-          </div>
-          <div style={{
-            flex:1, background:'rgba(255,255,255,0.06)', borderRadius:6,
-            padding:'4px 12px', fontSize:'0.72rem', color:'rgba(255,255,255,0.4)',
-            fontFamily:'monospace',
-          }}>
-            vivasimulator.app / mock-viva
-          </div>
-          <div style={{
-            background:'rgba(34,197,94,0.15)', border:'1px solid rgba(34,197,94,0.3)',
-            color:'#4ADE80', fontSize:'0.65rem', fontWeight:700,
-            padding:'3px 10px', borderRadius:999,
-          }}>● Live</div>
-        </div>
-
-        {/* Body */}
-        <div style={{ padding: '24px' }}>
-          {/* Progress */}
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
-            <span style={{ fontSize:'0.72rem', color:'rgba(255,255,255,0.4)', fontWeight:600 }}>
-              Question {qIdx + 1} of {questions.length}
-            </span>
-            <div style={{ display:'flex', gap:6 }}>
-              {questions.map((_,i) => (
-                <div key={i} style={{
-                  height:3, width:28, borderRadius:999,
-                  background: i <= qIdx ? 'linear-gradient(90deg,#2563EB,#FF6B4A)' : 'rgba(255,255,255,0.1)',
-                  transition:'background 0.3s',
-                }} />
-              ))}
-            </div>
-          </div>
-
-          {/* Question */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={qIdx}
-              initial={{ opacity:0, y:10 }}
-              animate={{ opacity:1, y:0 }}
-              exit={{ opacity:0, y:-10 }}
-              transition={{ duration:0.3 }}
-              style={{
-                background:'rgba(37,99,235,0.1)', border:'1px solid rgba(37,99,235,0.2)',
-                borderRadius:12, padding:'18px 20px', marginBottom:16,
-              }}
-            >
-              <div style={{ fontSize:'0.65rem', textTransform:'uppercase', letterSpacing:'0.1em', color:'#60A5FA', fontWeight:700, marginBottom:8 }}>
-                AI Question
-              </div>
-              <div style={{ fontSize:'0.9rem', fontWeight:600, color:'rgba(255,255,255,0.9)', lineHeight:1.5 }}>
-                {questions[qIdx]}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Answer area */}
-          {!submitted ? (
-            <textarea
-              value={answer}
-              onChange={e => setAnswer(e.target.value)}
-              placeholder="Type your answer here..."
-              rows={4}
-              style={{
-                width:'100%', background:'rgba(255,255,255,0.05)',
-                border:'1px solid rgba(255,255,255,0.1)', borderRadius:10,
-                padding:'14px 16px', fontSize:'0.84rem', color:'rgba(255,255,255,0.8)',
-                fontFamily:'inherit', resize:'none', outline:'none', marginBottom:16,
-                transition:'border-color 0.2s',
-              }}
-              onFocus={e => e.target.style.borderColor='rgba(37,99,235,0.5)'}
-              onBlur={e => e.target.style.borderColor='rgba(255,255,255,0.1)'}
-            />
-          ) : (
-            <motion.div
-              initial={{ opacity:0, scale:0.95 }}
-              animate={{ opacity:1, scale:1 }}
-              style={{
-                background:'rgba(255,107,74,0.1)', border:'1px solid rgba(255,107,74,0.25)',
-                borderRadius:10, padding:'16px', marginBottom:16,
-              }}
-            >
-              <div style={{ fontSize:'0.72rem', color:'#FF8A70', fontWeight:700, marginBottom:6 }}>AI Feedback</div>
-              <div style={{ fontSize:'0.82rem', color:'rgba(255,255,255,0.7)', lineHeight:1.6 }}>
-                Good attempt. Your explanation covers the retrieval mechanism but lacks detail on chunking strategy and re-ranking.
-              </div>
-            </motion.div>
-          )}
-
-          {/* Footer row */}
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-            <div style={{ display:'flex', gap:10 }}>
-              <div style={{
-                background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)',
-                borderRadius:8, padding:'6px 14px', fontSize:'0.72rem', fontWeight:700,
-                color: score ? '#FF8A70' : 'rgba(255,255,255,0.4)',
-              }}>
-                {score ? `Score: ${score}%` : 'Score: —'}
-              </div>
-              <div style={{
-                background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)',
-                borderRadius:8, padding:'6px 14px', fontSize:'0.72rem', fontWeight:700,
-                color:'rgba(255,255,255,0.4)',
-              }}>Gaps: 2</div>
-            </div>
-
-            {!submitted ? (
-              <button onClick={handleSubmit} disabled={loading || !answer.trim()} style={{
-                background: 'linear-gradient(135deg,#2563EB,#FF6B4A)',
-                border:'none', borderRadius:999, padding:'8px 20px',
-                fontSize:'0.8rem', fontWeight:700, color:'white', cursor:'pointer',
-                opacity: (!answer.trim() || loading) ? 0.5 : 1,
-                transition:'all 0.2s',
-              }}>
-                {loading ? 'Evaluating...' : 'Submit →'}
-              </button>
-            ) : (
-              <button onClick={handleNext} style={{
-                background:'rgba(255,255,255,0.1)', border:'1px solid rgba(255,255,255,0.15)',
-                borderRadius:999, padding:'8px 20px', fontSize:'0.8rem', fontWeight:700,
-                color:'white', cursor:'pointer', transition:'all 0.2s',
-              }}>
-                Next Question →
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Terminal, Cpu, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function Hero() {
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [evaluationResult, setEvaluationResult] = useState(null);
+
+  const sampleQuestions = [
+    {
+      id: 1,
+      topic: "RAG Pipeline & Embeddings",
+      question: "How does your system prevent hallucination during knowledge retrieval from student project documentation?",
+      sampleGood: "We implement cross-encoder reranking after dense vector retrieval, combined with strict context window grounding and temperature=0.1."
+    },
+    {
+      id: 2,
+      topic: "Scalability & Vector DB",
+      question: "Why did you choose your specific indexing scheme over traditional relational full-text search?",
+      sampleGood: "Traditional BM25 matches exact lexical tokens but fails on conceptual synonyms like 'latency' vs 'response delay'. Vector embeddings preserve semantic intent."
+    },
+    {
+      id: 3,
+      topic: "Adaptive Difficulty Engine",
+      question: "If a student answers poorly across initial questions, how does the system adjust the viva path?",
+      sampleGood: "The state machine steps back from synthesis/evaluation questions to foundational comprehension, flagging that node in the knowledge gap ledger."
+    }
+  ];
+
+  const currentQ = sampleQuestions[activeQuestionIndex];
+
+  const handleEvaluate = () => {
+    if (!userAnswer.trim()) return;
+    setIsAnalyzing(true);
+    setTimeout(() => {
+      setIsAnalyzing(false);
+      const wordCount = userAnswer.trim().split(/\s+/).length;
+      const score = Math.min(96, Math.max(70, Math.floor(75 + (wordCount * 0.75))));
+      setEvaluationResult({
+        score: score,
+        clarity: score > 85 ? "Authoritative Defense" : "Satisfactory",
+        feedback: score > 85 
+          ? "Crisp, concise technical articulation. Examiner confidence rating: 9.4/10."
+          : "Valid conceptual foundation. Recommendation: Bolster exact latency and hardware trade-offs.",
+        detectedGaps: score > 85 ? [] : ["Quantitative boundary metrics", "Failure domain recovery plan"]
+      });
+    }, 1100);
+  };
+
+  const handleInsertSample = () => {
+    setUserAnswer(currentQ.sampleGood);
+  };
+
   return (
-    <section style={{ position:'relative', minHeight:'100vh', display:'flex', alignItems:'center', paddingTop:80, overflow:'hidden' }}>
-      <style>{`@keyframes blink { 50% { opacity:0; } }`}</style>
-      <Orbs />
+    <section className="relative pt-36 pb-24 lg:pt-44 lg:pb-32 overflow-hidden bg-grid">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left: Bold Editorial Headlines */}
+          <div className="lg:col-span-7 flex flex-col items-start">
+            
+            {/* Pill Tag */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#161922] border border-white/15 text-sand-200 text-xs font-mono mb-8">
+              <span className="w-2 h-2 rounded-full bg-electric-blue"></span>
+              <span className="uppercase tracking-widest font-semibold text-[11px]">AI-Powered Viva Preparation Platform</span>
+            </div>
 
-      <div style={{ maxWidth:1180, margin:'0 auto', padding:'60px 32px', width:'100%', position:'relative', zIndex:1 }}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:64, alignItems:'center' }}>
+            {/* Huge Bold Title */}
+            <h1 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl text-sand-50 tracking-tighter leading-[1.04] mb-8">
+              BRIDGE THE GAP BETWEEN <br/>
+              <span className="text-sand-300 border-b-2 border-sand-400/40 pb-1">
+                BUILDING A PROJECT
+              </span> <br/>
+              AND DEFENDING IT.
+            </h1>
 
-          {/* LEFT */}
-          <div>
-            <motion.div
-              initial={{ opacity:0, y:20 }}
-              animate={{ opacity:1, y:0 }}
-              transition={{ duration:0.6 }}
-            >
-              <div style={{
-                display:'inline-flex', alignItems:'center', gap:8,
-                border:'1px solid rgba(255,107,74,0.35)',
-                background:'rgba(255,107,74,0.08)',
-                borderRadius:999, padding:'6px 16px', marginBottom:28,
-              }}>
-                <div style={{ width:7, height:7, borderRadius:'50%', background:'#FF6B4A', animation:'blink 1.8s step-start infinite' }} />
-                <span style={{ fontSize:'0.72rem', fontWeight:700, color:'#FF8A70', letterSpacing:'0.08em', textTransform:'uppercase' }}>
-                  AI-Powered Viva Preparation
-                </span>
+            {/* Description */}
+            <p className="text-lg sm:text-xl text-sand-muted leading-relaxed max-w-xl mb-10 font-normal">
+              An intelligent, adaptive feedback loop that indexes your project documentation, anticipates tough examiner scrutiny, and trains you to defend every architectural choice with authority.
+            </p>
+
+            {/* Actions */}
+            <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-12">
+              <a 
+                href="#simulator" 
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs font-black uppercase tracking-wider text-white bg-electric-blue hover:bg-electric-blue-hover transition-all flex items-center justify-center gap-2.5 shadow-xl shadow-electric-blue/30 active:translate-y-0.5 hover:-translate-y-0.5"
+              >
+                <span>Launch Interactive Viva</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <a 
+                href="#loop" 
+                className="w-full sm:w-auto px-7 py-4 rounded-xl text-xs font-bold uppercase tracking-wider text-sand-200 hover:text-white bg-[#161922] hover:bg-[#1E222D] border border-white/10 transition-all flex items-center justify-center gap-2"
+              >
+                <span>The Feedback Loop</span>
+              </a>
+            </div>
+
+            {/* Impact Metrics */}
+            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/10 w-full max-w-lg">
+              <div>
+                <div className="font-mono font-black text-3xl text-sand-100">100%</div>
+                <div className="text-xs text-sand-muted font-mono uppercase tracking-wider mt-1">Project Grounded</div>
               </div>
-            </motion.div>
+              <div>
+                <div className="font-mono font-black text-3xl text-electric-light">RAG</div>
+                <div className="text-xs text-sand-muted font-mono uppercase tracking-wider mt-1">Context Engine</div>
+              </div>
+              <div>
+                <div className="font-mono font-black text-3xl text-sand-300">Adaptive</div>
+                <div className="text-xs text-sand-muted font-mono uppercase tracking-wider mt-1">Examiner Loop</div>
+              </div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity:0, y:30 }}
-              animate={{ opacity:1, y:0 }}
-              transition={{ duration:0.7, delay:0.1 }}
-              style={{
-                fontSize:'clamp(2.4rem, 4.5vw, 3.8rem)',
-                fontWeight:900, lineHeight:1.06, letterSpacing:'-0.035em',
-                color:'white', marginBottom:12,
-              }}
-            >
-              Prepare Smarter.
-            </motion.h1>
+          </div>
 
-            <motion.h1
-              initial={{ opacity:0, y:30 }}
-              animate={{ opacity:1, y:0 }}
-              transition={{ duration:0.7, delay:0.2 }}
-              style={{
-                fontSize:'clamp(2.4rem, 4.5vw, 3.8rem)',
-                fontWeight:900, lineHeight:1.06, letterSpacing:'-0.035em',
-                marginBottom:28, minHeight:'1.1em',
-              }}
-            >
-              <Typewriter words={['Present With Confidence.', 'Master Every Concept.', 'Ace Your Viva.']} />
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity:0, y:20 }}
-              animate={{ opacity:1, y:0 }}
-              transition={{ duration:0.7, delay:0.3 }}
-              style={{
-                fontSize:'1.05rem', lineHeight:1.75, color:'rgba(255,255,255,0.55)',
-                maxWidth:460, marginBottom:40,
-              }}
-            >
-              An AI-powered platform that reads your project, generates targeted viva questions,
-              evaluates your answers, and trains you until you can explain every concept with confidence.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity:0, y:20 }}
-              animate={{ opacity:1, y:0 }}
-              transition={{ duration:0.7, delay:0.4 }}
-              style={{ display:'flex', gap:14, flexWrap:'wrap', marginBottom:40 }}
-            >
-              <a href="#cta" style={{
-                display:'inline-flex', alignItems:'center', gap:8,
-                background:'linear-gradient(135deg,#2563EB 0%,#FF6B4A 100%)',
-                color:'white', padding:'13px 30px', borderRadius:999,
-                fontWeight:700, fontSize:'0.95rem', textDecoration:'none',
-                boxShadow:'0 8px 32px rgba(255,107,74,0.35)',
-                transition:'all 0.25s',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 14px 40px rgba(255,107,74,0.5)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='0 8px 32px rgba(255,107,74,0.35)' }}
-              >Start Practising →</a>
-
-              <a href="#features" style={{
-                display:'inline-flex', alignItems:'center', gap:8,
-                border:'1px solid rgba(255,255,255,0.15)',
-                color:'rgba(255,255,255,0.8)', padding:'13px 30px', borderRadius:999,
-                fontWeight:600, fontSize:'0.95rem', textDecoration:'none',
-                transition:'all 0.25s',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.4)'; e.currentTarget.style.color='white' }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.15)'; e.currentTarget.style.color='rgba(255,255,255,0.8)' }}
-              >Explore Features</a>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity:0 }}
-              animate={{ opacity:1 }}
-              transition={{ duration:0.7, delay:0.6 }}
-              style={{ display:'flex', alignItems:'center', gap:24 }}
-            >
-              {[['RAG-Powered', '#2563EB'], ['Adaptive AI', '#FF6B4A'], ['Project-Aware', '#6366F1']].map(([t,c]) => (
-                <div key={t} style={{ display:'flex', alignItems:'center', gap:8 }}>
-                  <div style={{ width:7, height:7, borderRadius:'50%', background:c }} />
-                  <span style={{ fontSize:'0.78rem', color:'rgba(255,255,255,0.4)', fontWeight:500 }}>{t}</span>
+          {/* Right: Bold Terminal Window */}
+          <div className="lg:col-span-5 relative">
+            <div className="charcoal-panel rounded-2xl p-6 border border-white/15 shadow-2xl">
+              
+              {/* Terminal Titlebar */}
+              <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-[#2A2E39] inline-block"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#2A2E39] inline-block"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#2A2E39] inline-block"></span>
+                  <span className="text-xs font-mono text-sand-muted ml-2">Session_RAG#084</span>
                 </div>
-              ))}
-            </motion.div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-electric-blue"></span>
+                  <span className="text-[11px] font-mono text-sand-300 uppercase tracking-widest font-semibold">Active Session</span>
+                </div>
+              </div>
+
+              {/* Question Box */}
+              <div className="bg-[#0C0E12] border border-white/10 rounded-xl p-4 mb-4">
+                <div className="flex items-center justify-between text-xs text-electric-light font-mono mb-2">
+                  <span className="font-bold">QUESTION {activeQuestionIndex + 1} OF 3</span>
+                  <span className="text-sand-muted uppercase text-[10px]">{currentQ.topic}</span>
+                </div>
+                <p className="text-sm text-sand-100 font-medium leading-relaxed">
+                  "{currentQ.question}"
+                </p>
+              </div>
+
+              {/* Defense Input */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-[11px] text-sand-muted font-mono uppercase tracking-wider font-semibold">Student Defense:</label>
+                  <button 
+                    onClick={handleInsertSample}
+                    className="text-xs text-sand-200 hover:text-white underline font-mono"
+                  >
+                    Insert Model Defense
+                  </button>
+                </div>
+                <textarea
+                  rows={3}
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  placeholder="State your technical justification with boundary constraints..."
+                  className="w-full bg-[#0C0E12] border border-white/10 rounded-xl p-3.5 text-xs text-sand-100 placeholder:text-sand-muted/50 focus:outline-none focus:border-sand-300 transition-all font-sans"
+                />
+              </div>
+
+              {/* Question Switcher & Submit */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-1.5">
+                  {sampleQuestions.map((q, idx) => (
+                    <button
+                      key={q.id}
+                      onClick={() => {
+                        setActiveQuestionIndex(idx);
+                        setUserAnswer("");
+                        setEvaluationResult(null);
+                      }}
+                      className={`w-7 h-7 rounded text-xs font-mono font-bold transition-all ${
+                        activeQuestionIndex === idx
+                          ? 'bg-sand-200 text-black font-extrabold'
+                          : 'bg-[#181C24] text-sand-muted hover:text-sand-200'
+                      }`}
+                    >
+                      {idx + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={handleEvaluate}
+                  disabled={isAnalyzing || !userAnswer.trim()}
+                  className={`px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 ${
+                    !userAnswer.trim()
+                      ? 'bg-[#181C24] text-sand-muted/40 cursor-not-allowed'
+                      : 'bg-electric-blue hover:bg-electric-blue-hover text-white shadow-md shadow-electric-blue/30'
+                  }`}
+                >
+                  {isAnalyzing ? (
+                    <span>Evaluating...</span>
+                  ) : (
+                    <span>Evaluate Defense →</span>
+                  )}
+                </button>
+              </div>
+
+              {/* Evaluation Output Drawer */}
+              {evaluationResult && (
+                <div className="mt-5 pt-4 border-t border-white/10 animate-fadeIn">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-mono text-sand-200 uppercase tracking-widest font-bold">Examiner Scorecard</span>
+                    <span className="text-sm font-mono font-black text-electric-light">
+                      {evaluationResult.score} / 100
+                    </span>
+                  </div>
+                  <p className="text-xs text-sand-300 leading-relaxed mb-3">
+                    {evaluationResult.feedback}
+                  </p>
+                  {evaluationResult.detectedGaps.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-[10px] text-sand-muted font-mono uppercase font-semibold">Flagged:</span>
+                      {evaluationResult.detectedGaps.map((gap, i) => (
+                        <span key={i} className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#0C0E12] border border-white/10 text-sand-300">
+                          {gap}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+            </div>
           </div>
 
-          {/* RIGHT: Interactive mock window */}
-          <div>
-            <MockWindow />
-          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

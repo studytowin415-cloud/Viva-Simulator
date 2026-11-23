@@ -1,87 +1,85 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from 'react';
+import { Terminal, Shield, ArrowRight, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  const links = [
-    { href: '#about',    label: 'About' },
-    { href: '#features', label: 'Features' },
-    { href: '#how',      label: 'How it Works' },
-    { href: '#compare',  label: 'Why Us' },
-  ]
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 999,
-        padding: '0 32px',
-        height: '64px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: scrolled ? 'rgba(13,13,13,0.9)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
-        transition: 'all 0.4s ease',
-      }}
-    >
-      {/* Brand */}
-      <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-        <div style={{
-          width: 34, height: 34, borderRadius: 10,
-          background: 'linear-gradient(135deg, #2563EB, #FF6B4A)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontWeight: 900, fontSize: 16, color: 'white',
-        }}>V</div>
-        <span style={{ fontWeight: 800, fontSize: '1rem', color: 'white', letterSpacing: '-0.01em' }}>
-          Viva Simulator
-        </span>
-      </a>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled 
+        ? 'bg-[#090A0D]/90 backdrop-blur-md border-b border-white/[0.08] py-4 shadow-2xl' 
+        : 'bg-transparent py-6'
+    }`}>
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        {/* Brand */}
+        <a href="#" className="flex items-center gap-3.5 group">
+          <div className="w-9 h-9 rounded-lg bg-[#181C24] border border-white/15 flex items-center justify-center font-mono font-bold text-xs text-sand-100 group-hover:border-electric-blue transition-colors">
+            VS
+          </div>
+          <div className="flex flex-col">
+            <span className="font-display font-black text-lg text-sand-50 tracking-tight flex items-center gap-2">
+              VIVA SIMULATOR
+              <span className="w-2 h-2 rounded-full bg-electric-blue"></span>
+            </span>
+            <span className="text-[10px] text-sand-muted font-mono tracking-widest uppercase">
+              Defense Engine
+            </span>
+          </div>
+        </a>
 
-      {/* Desktop nav */}
-      <nav style={{ display: 'flex', gap: 36, listStyle: 'none' }}>
-        {links.map(l => (
-          <a key={l.href} href={l.href} style={{
-            color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem', fontWeight: 500,
-            textDecoration: 'none', transition: 'color 0.2s',
-          }}
-          onMouseEnter={e => e.target.style.color = '#fff'}
-          onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.55)'}
-          >{l.label}</a>
-        ))}
-      </nav>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8">
+          <a href="#about" className="text-xs font-semibold uppercase tracking-wider text-sand-300 hover:text-white transition-colors">About</a>
+          <a href="#loop" className="text-xs font-semibold uppercase tracking-wider text-sand-300 hover:text-white transition-colors">Feedback Loop</a>
+          <a href="#simulator" className="text-xs font-semibold uppercase tracking-wider text-sand-300 hover:text-white transition-colors flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
+            Simulator
+          </a>
+          <a href="#features" className="text-xs font-semibold uppercase tracking-wider text-sand-300 hover:text-white transition-colors">Capabilities</a>
+          <a href="#comparison" className="text-xs font-semibold uppercase tracking-wider text-sand-300 hover:text-white transition-colors">Why Us</a>
+          <a href="#vision" className="text-xs font-semibold uppercase tracking-wider text-sand-300 hover:text-white transition-colors">Vision</a>
+        </nav>
 
-      {/* CTA */}
-      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-        <a href="#features" style={{
-          padding: '8px 20px', borderRadius: 999,
-          border: '1px solid rgba(255,255,255,0.15)',
-          color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', fontWeight: 600,
-          textDecoration: 'none', transition: 'all 0.2s',
-        }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.4)'; e.currentTarget.style.color='white' }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.15)'; e.currentTarget.style.color='rgba(255,255,255,0.75)' }}
-        >Explore</a>
-        <a href="#cta" style={{
-          padding: '8px 20px', borderRadius: 999,
-          background: 'linear-gradient(135deg, #2563EB, #FF6B4A)',
-          color: 'white', fontSize: '0.85rem', fontWeight: 700,
-          textDecoration: 'none', transition: 'all 0.2s',
-          boxShadow: '0 4px 20px rgba(255,107,74,0.3)',
-        }}
-        onMouseEnter={e => { e.currentTarget.style.transform='translateY(-1px)'; e.currentTarget.style.boxShadow='0 8px 30px rgba(255,107,74,0.5)' }}
-        onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.boxShadow='0 4px 20px rgba(255,107,74,0.3)' }}
-        >Start Practising</a>
+        {/* CTA */}
+        <div className="hidden md:flex items-center gap-4">
+          <a 
+            href="#simulator" 
+            className="px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-electric-blue hover:bg-electric-blue-hover transition-all duration-200 shadow-md shadow-electric-blue/30 active:translate-y-0.5"
+          >
+            Launch Mock Viva
+          </a>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+          className="md:hidden text-sand-300 hover:text-white p-2"
+          aria-label="Toggle Navigation"
+        >
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </div>
-    </motion.header>
-  )
+
+      {/* Mobile Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-[#0F1116] border-b border-white/10 px-6 py-6 flex flex-col gap-4 animate-fadeIn">
+          <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-sm font-semibold text-sand-200">About</a>
+          <a href="#loop" onClick={() => setMobileMenuOpen(false)} className="text-sm font-semibold text-sand-200">Feedback Loop</a>
+          <a href="#simulator" onClick={() => setMobileMenuOpen(false)} className="text-sm font-semibold text-electric-light">Interactive Simulator</a>
+          <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-sm font-semibold text-sand-200">Capabilities</a>
+          <a href="#comparison" onClick={() => setMobileMenuOpen(false)} className="text-sm font-semibold text-sand-200">Why Us</a>
+          <a href="#simulator" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-electric-blue font-bold text-xs uppercase tracking-wider text-white">
+            Launch Mock Viva
+          </a>
+        </div>
+      )}
+    </header>
+  );
 }

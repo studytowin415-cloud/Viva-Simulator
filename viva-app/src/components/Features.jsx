@@ -1,102 +1,104 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
-
-const FEATURES = [
-  { n:'01', cat:'Upload', title:'Project Upload & Analysis', desc:'Upload your project report, documentation, or code. The system parses and indexes your content into a knowledge base ready for assessment.' },
-  { n:'02', cat:'Generate', title:'AI-Powered Viva Questions', desc:'Questions are generated directly from your project using a RAG pipeline — not textbooks. Every question is relevant to what you built.' },
-  { n:'03', cat:'Practise', title:'Interactive Mock Viva', desc:'Simulate a real viva. Answer questions, navigate difficulty levels, and practise responding under realistic exam conditions.' },
-  { n:'04', cat:'Evaluate', title:'Answer Evaluation', desc:'Each answer is evaluated for accuracy, depth and clarity. Get structured feedback showing exactly where your explanation fell short.' },
-  { n:'05', cat:'Track', title:'Performance Tracking', desc:'View scores across sessions. See which concepts are mastered and which need attention — topic by topic, session by session.' },
-  { n:'06', cat:'Adapt', title:'Personalised Practice', desc:'The system identifies your knowledge gaps and re-focuses your sessions on weak areas, adapting difficulty as your mastery grows.' },
-]
-
-function FeatureCard({ n, cat, title, desc, delay }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderRadius: 16, padding: '28px 24px',
-        cursor: 'default', transition: 'border-color 0.3s, box-shadow 0.3s',
-        position: 'relative', overflow: 'hidden',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'rgba(37,99,235,0.35)'
-        e.currentTarget.style.boxShadow = '0 20px 60px rgba(37,99,235,0.1)'
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
-        e.currentTarget.style.boxShadow = 'none'
-      }}
-    >
-      {/* Top glow accent */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: 1,
-        background: 'linear-gradient(90deg, transparent, rgba(37,99,235,0.5), rgba(255,107,74,0.5), transparent)',
-        opacity: 0,
-        transition: 'opacity 0.3s',
-      }} />
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
-        <div style={{
-          fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em',
-          textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)',
-        }}>{n} — {cat}</div>
-        <div style={{
-          width: 32, height: 32, borderRadius: 8,
-          background: 'linear-gradient(135deg, rgba(37,99,235,0.2), rgba(255,107,74,0.2))',
-          border: '1px solid rgba(255,255,255,0.08)',
-        }} />
-      </div>
-      <div style={{ fontWeight: 700, fontSize: '1rem', color: 'white', marginBottom: 10, lineHeight: 1.3 }}>{title}</div>
-      <div style={{ fontSize: '0.84rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.68 }}>{desc}</div>
-    </motion.div>
-  )
-}
+import React from 'react';
+import { Database, Cpu, Target, Mic, BarChart3, Repeat } from 'lucide-react';
 
 export default function Features() {
-  const hRef = useRef(null)
-  const hInView = useInView(hRef, { once: true, margin: '-80px' })
+  const features = [
+    {
+      num: "01",
+      tag: "RAG Pipeline",
+      title: "Project-Aware Knowledge Ingestion",
+      desc: "Parses PDF project reports, codebases, and architectural blueprints into dedicated vector knowledge spaces. Zero generic textbook trivia.",
+      icon: Database
+    },
+    {
+      num: "02",
+      tag: "Adaptive Scrutiny",
+      title: "Dynamic Examiner Personalities",
+      desc: "Simulates diverse academic and industry panel scrutiny: from supportive university guides to rigorous external industry assessors.",
+      icon: Cpu
+    },
+    {
+      num: "03",
+      tag: "Diagnostic Diagnostics",
+      title: "Pinpoint Knowledge Gap Detection",
+      desc: "Distinguishes between conceptual misunderstandings, lack of quantitative boundary data, and surface-level articulation.",
+      icon: Target
+    },
+    {
+      num: "04",
+      tag: "Oral & Written",
+      title: "Timed Viva Simulations",
+      desc: "Practise under realistic timed examination conditions with instant line-item critique on clarity, brevity, and conviction.",
+      icon: Mic
+    },
+    {
+      num: "05",
+      tag: "Quantitative Metrics",
+      title: "Measurable Progress Tracking",
+      desc: "Track mastery curves over sessions with clear competency breakdowns: Architecture, Security, Edge Cases, and Trade-offs.",
+      icon: BarChart3
+    },
+    {
+      num: "06",
+      tag: "Continuous Loop",
+      title: "Targeted Re-Viva Scaffolding",
+      desc: "Automatically revisits flagged concepts with follow-up socratic questions until architectural comprehension is locked in.",
+      icon: Repeat
+    }
+  ];
 
   return (
-    <section id="features" style={{
-      padding: '120px 32px',
-      background: 'linear-gradient(180deg, #111117 0%, #0D0D0D 100%)',
-      borderTop: '1px solid rgba(255,255,255,0.06)',
-    }}>
-      <div style={{ maxWidth: 1140, margin: '0 auto' }}>
-        <div ref={hRef} style={{ textAlign: 'center', marginBottom: 64 }}>
-          <motion.p
-            initial={{ opacity:0, y:16 }} animate={hInView?{opacity:1,y:0}:{}}
-            transition={{ duration:0.5 }}
-            style={{ fontSize:'0.72rem', fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'rgba(255,255,255,0.3)', marginBottom:16 }}
-          >Core Features</motion.p>
-          <motion.h2
-            initial={{ opacity:0, y:24 }} animate={hInView?{opacity:1,y:0}:{}}
-            transition={{ duration:0.6, delay:0.1 }}
-            style={{ fontSize:'clamp(1.8rem,3.5vw,2.8rem)', fontWeight:900, letterSpacing:'-0.03em', color:'white', marginBottom:16 }}
-          >Everything you need to prepare<br/>for your next viva.</motion.h2>
-          <motion.p
-            initial={{ opacity:0, y:20 }} animate={hInView?{opacity:1,y:0}:{}}
-            transition={{ duration:0.6, delay:0.2 }}
-            style={{ fontSize:'1rem', color:'rgba(255,255,255,0.4)', lineHeight:1.7, maxWidth:480, margin:'0 auto' }}
-          >Six focused capabilities, built specifically for project-based viva examinations.</motion.p>
+    <section id="features" className="py-28 bg-[#0D0F14] border-t border-white/10">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#181C24] border border-white/10 text-sand-300 text-xs font-mono mb-4 uppercase tracking-widest">
+            <span>Capabilities Matrix</span>
+          </div>
+          <h2 className="font-display font-black text-3xl sm:text-5xl text-sand-50 tracking-tight mb-4">
+            ENGINEERED FOR COMPLETE VIVA MASTERY
+          </h2>
+          <p className="text-sand-muted text-base leading-relaxed">
+            Everything required to transform students from hesitant developers into authoritative technical presenters.
+          </p>
         </div>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16 }}>
-          {FEATURES.map((f, i) => (
-            <FeatureCard key={f.n} {...f} delay={i * 0.08} />
-          ))}
+        {/* 6 Grid Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {features.map((f) => {
+            const Icon = f.icon;
+            return (
+              <div
+                key={f.num}
+                className="charcoal-panel p-7 rounded-2xl relative transition-all duration-200 charcoal-panel-hover"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-mono font-black text-electric-light">
+                    {f.num}
+                  </span>
+                  <span className="px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider bg-black/40 border border-white/10 text-sand-300 font-semibold">
+                    {f.tag}
+                  </span>
+                </div>
+
+                <div className="w-10 h-10 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center mb-4 text-sand-200">
+                  <Icon className="w-5 h-5 text-sand-100" />
+                </div>
+
+                <h3 className="font-display font-bold text-lg text-sand-100 mb-2">
+                  {f.title}
+                </h3>
+
+                <p className="text-xs text-sand-muted leading-relaxed font-normal">
+                  {f.desc}
+                </p>
+              </div>
+            );
+          })}
         </div>
+
       </div>
     </section>
-  )
+  );
 }
