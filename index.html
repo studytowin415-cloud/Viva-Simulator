@@ -1,1105 +1,1215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Viva Simulator — Prepare Smarter. Present With Confidence.</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viva Simulator — Prepare Smarter. Defend With Confidence.</title>
+  
+  <!-- Premium Clean Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            charcoal: {
+              950: '#0C0D10',
+              900: '#121418',
+              850: '#181A20',
+              800: '#20232B',
+              750: '#292D37',
+              700: '#353A47',
+              muted: '#717888',
+            },
+            sand: {
+              50: '#FBF9F5',
+              100: '#F5F1E8',
+              200: '#EAE3D2',
+              300: '#DDD4BD',
+              400: '#C7BA9E',
+              500: '#A49576',
+              600: '#75684E',
+              muted: '#9E9482',
+            },
+            electric: {
+              blue: '#0062FF',
+              blueHover: '#0052D6',
+              light: '#408BFF',
+              glow: 'rgba(0, 98, 255, 0.4)',
+              surface: 'rgba(0, 98, 255, 0.08)',
+              border: 'rgba(0, 98, 255, 0.28)',
+            }
+          },
+          fontFamily: {
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', '"Inter"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          letterSpacing: {
+            tighter: '-0.04em',
+            tight: '-0.025em',
+            snug: '-0.015em',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & Babel Standalone -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
   <style>
-    /* ═══════════════════════════════════════
-       RESET & BASE
-    ═══════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --white:    #FFFFFF;
-      --off:      #F5F5F3;
-      --border:   #E8E8E5;
-      --text-1:   #1A1A1A;
-      --text-2:   #4A4A4A;
-      --text-3:   #9A9A9A;
-      --accent:   #1A1A1A;
-      --max-w:    1140px;
-      --radius:   14px;
-      --radius-sm:8px;
-    }
-
-    html { scroll-behavior: smooth; font-size: 16px; }
-
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--white);
-      color: var(--text-1);
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #0E1013;
+      color: #E6E1D8;
     }
 
-    img, svg { display: block; }
-
-    /* ═══════════════════════════════════════
-       UTILITY
-    ═══════════════════════════════════════ */
-    .container {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-    @media(max-width:768px){ .container{ padding:0 20px; } }
-
-    .pill-label {
-      display: inline-block;
-      border: 1px solid var(--border);
-      background: var(--white);
-      color: var(--text-3);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border-radius: 999px;
-      padding: 5px 14px;
+    /* Subtle architectural grid */
+    .bg-grid-subtle {
+      background-size: 56px 56px;
+      background-image: 
+        linear-gradient(to right, rgba(234, 227, 210, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(234, 227, 210, 0.025) 1px, transparent 1px);
     }
 
-    .section-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      margin-bottom: 16px;
-    }
-
-    .section-heading {
-      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-      font-weight: 800;
-      line-height: 1.12;
-      letter-spacing: -0.025em;
-      color: var(--text-1);
-    }
-
-    .section-sub {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--text-3);
-      max-width: 520px;
-    }
-
-    /* scroll reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-    .reveal.in { opacity: 1; transform: none; }
-
-    /* ═══════════════════════════════════════
-       BUTTONS
-    ═══════════════════════════════════════ */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 999px;
-      transition: all 0.22s ease;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .btn-dark {
-      background: var(--text-1);
-      color: var(--white);
-      border: 1.5px solid var(--text-1);
-      padding: 11px 26px;
-    }
-    .btn-dark:hover {
-      background: #333;
-      border-color: #333;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text-2);
-      border: 1.5px solid var(--border);
-      padding: 11px 26px;
-    }
-    .btn-outline:hover {
-      border-color: #bbb;
-      color: var(--text-1);
-      transform: translateY(-1px);
-    }
-
-    .btn-lg {
-      font-size: 0.95rem;
-      padding: 14px 32px;
-    }
-
-    /* ═══════════════════════════════════════
-       NAVBAR
-    ═══════════════════════════════════════ */
-    #nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 999;
-      background: rgba(255,255,255,0.9);
+    .charcoal-card {
+      background: rgba(22, 25, 32, 0.75);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      height: 60px;
-      display: flex;
-      align-items: center;
-    }
-    #nav .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      text-decoration: none;
-      color: var(--text-1);
-      font-weight: 800;
-      font-size: 0.95rem;
-      letter-spacing: -0.01em;
-    }
-    .nav-logo-mark {
-      width: 30px; height: 30px;
-      background: var(--text-1);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-weight: 900; font-size: 14px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-3);
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: color 0.18s;
-    }
-    .nav-links a:hover { color: var(--text-1); }
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    @media(max-width:768px){
-      .nav-links { display: none; }
-      .nav-actions .btn-outline { display: none; }
+      border: 1px solid rgba(234, 227, 210, 0.08);
+      box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6);
     }
 
-    /* ═══════════════════════════════════════
-       HERO
-    ═══════════════════════════════════════ */
-    #hero {
-      padding: 140px 0 80px;
-      background: var(--white);
+    .charcoal-card-hover {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    #hero .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-    @media(max-width:900px){
-      #hero .container { grid-template-columns: 1fr; gap: 48px; }
-      .hero-visual { order: -1; }
-    }
-
-    .hero-left { max-width: 560px; }
-    .hero-pill { margin-bottom: 24px; }
-
-    .hero-title {
-      font-size: clamp(2.2rem, 4.5vw, 3.6rem);
-      font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -0.035em;
-      color: var(--text-1);
-      margin-bottom: 20px;
-    }
-
-    .hero-desc {
-      font-size: 1.05rem;
-      line-height: 1.72;
-      color: var(--text-3);
-      margin-bottom: 36px;
-      max-width: 480px;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 44px;
-    }
-
-    .hero-trust {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.8rem;
-      color: var(--text-3);
-    }
-    .hero-trust-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: #22C55E;
-      flex-shrink: 0;
-    }
-
-    /* Mock Viva UI */
-    .hero-visual {
-      position: relative;
-    }
-    .mock-window {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
-    }
-    .mock-titlebar {
-      background: var(--off);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .mock-dots { display: flex; gap: 6px; }
-    .mock-dots span {
-      width: 11px; height: 11px;
-      border-radius: 50%;
-    }
-    .mock-dots span:nth-child(1) { background: #FF5F57; }
-    .mock-dots span:nth-child(2) { background: #FFBD2E; }
-    .mock-dots span:nth-child(3) { background: #28C840; }
-    .mock-url {
-      flex: 1;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 4px 12px;
-      font-size: 0.72rem;
-      color: var(--text-3);
-      font-family: monospace;
-    }
-    .mock-body {
-      padding: 24px;
-    }
-    .mock-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .mock-badge {
-      background: #ECFDF5;
-      color: #16A34A;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid #BBF7D0;
-    }
-    .mock-session-label {
-      font-size: 0.72rem;
-      color: var(--text-3);
-      font-weight: 500;
-    }
-    .mock-question-card {
-      background: var(--off);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 16px;
-    }
-    .mock-q-label {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-3);
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .mock-q-text {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-1);
-      line-height: 1.4;
-    }
-    .mock-answer-area {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 16px;
-      min-height: 68px;
-    }
-    .mock-answer-placeholder {
-      font-size: 0.82rem;
-      color: var(--text-3);
-    }
-    .mock-cursor {
-      display: inline-block;
-      width: 2px; height: 14px;
-      background: var(--text-1);
-      margin-left: 2px;
-      vertical-align: middle;
-      animation: blink 1.1s step-start infinite;
-    }
-    @keyframes blink { 50%{ opacity:0; } }
-    .mock-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .mock-score-row {
-      display: flex;
-      gap: 12px;
-    }
-    .mock-score-chip {
-      background: var(--off);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--text-2);
-    }
-    .mock-submit {
-      background: var(--text-1);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      padding: 8px 18px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    /* ═══════════════════════════════════════
-       ABOUT — 2 COLUMN
-    ═══════════════════════════════════════ */
-    #about {
-      padding: 100px 0;
-      background: var(--white);
-      border-top: 1px solid var(--border);
-    }
-    #about .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    @media(max-width:800px){ #about .container{ grid-template-columns:1fr; gap:48px; } }
-
-    .about-left { }
-    .about-heading { margin: 16px 0 20px; }
-    .about-desc {
-      font-size: 0.95rem;
-      line-height: 1.75;
-      color: var(--text-3);
-    }
-
-    .about-right { display: flex; flex-direction: column; gap: 12px; }
-
-    .info-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 24px;
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      transition: box-shadow 0.22s, border-color 0.22s, transform 0.22s;
-      cursor: default;
-    }
-    .info-card:hover {
-      border-color: #ccc;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-      transform: translateY(-2px);
-    }
-    .info-card-num {
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: var(--text-3);
-      letter-spacing: 0.05em;
-      min-width: 28px;
-      padding-top: 2px;
-    }
-    .info-card-body { }
-    .info-card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-1);
-      margin-bottom: 6px;
-    }
-    .info-card-desc {
-      font-size: 0.84rem;
-      color: var(--text-3);
-      line-height: 1.6;
-    }
-
-    /* ═══════════════════════════════════════
-       FEATURES — 3 COL GRID
-    ═══════════════════════════════════════ */
-    #features {
-      padding: 100px 0;
-      background: var(--off);
-      border-top: 1px solid var(--border);
-    }
-    .features-header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-    .features-header .section-sub {
-      margin: 16px auto 0;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    @media(max-width:900px){ .features-grid{ grid-template-columns:repeat(2,1fr); } }
-    @media(max-width:580px){ .features-grid{ grid-template-columns:1fr; } }
-
-    .feat-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 26px;
-      transition: box-shadow 0.22s, border-color 0.22s, transform 0.22s;
-      cursor: default;
-    }
-    .feat-card:hover {
-      border-color: #ccc;
-      box-shadow: 0 8px 36px rgba(0,0,0,0.07);
+    .charcoal-card-hover:hover {
       transform: translateY(-3px);
-    }
-    .feat-num {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--text-3);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-    .feat-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text-1);
-      margin-bottom: 10px;
-      line-height: 1.3;
-    }
-    .feat-desc {
-      font-size: 0.84rem;
-      color: var(--text-3);
-      line-height: 1.65;
+      border-color: rgba(234, 227, 210, 0.18);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7);
     }
 
-    /* ═══════════════════════════════════════
-       HOW IT WORKS
-    ═══════════════════════════════════════ */
-    #how {
-      padding: 100px 0;
-      background: var(--white);
-      border-top: 1px solid var(--border);
-    }
-    .how-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-    .how-header .section-sub { margin: 16px auto 0; }
-
-    .how-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      position: relative;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-    .how-steps::before {
-      content: '';
-      position: absolute;
-      top: 20px;
-      left: calc(12.5% + 20px);
-      right: calc(12.5% + 20px);
-      height: 1px;
-      background: var(--border);
-      z-index: 0;
-    }
-    @media(max-width:800px){
-      .how-steps { grid-template-columns: repeat(2,1fr); gap: 32px; }
-      .how-steps::before { display: none; }
-    }
-    @media(max-width:500px){
-      .how-steps { grid-template-columns: 1fr; }
-    }
-
-    .how-step {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 0 16px;
-    }
-    .how-step-num {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: var(--white);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--text-1);
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .how-step-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-1);
-      margin-bottom: 10px;
-      line-height: 1.3;
-    }
-    .how-step-desc {
-      font-size: 0.8rem;
-      color: var(--text-3);
-      line-height: 1.6;
-    }
-
-    .how-loop-note {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 56px;
-      padding: 14px 28px;
-      background: var(--off);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-2);
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* ═══════════════════════════════════════
-       COMPARISON
-    ═══════════════════════════════════════ */
-    #compare {
-      padding: 100px 0;
-      background: var(--off);
-      border-top: 1px solid var(--border);
-    }
-    .compare-header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-    .compare-header .section-sub { margin: 16px auto 0; }
-
-    .compare-table {
-      max-width: 820px;
-      margin: 0 auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--white);
-    }
-    .compare-thead {
-      display: grid;
-      grid-template-columns: 1.6fr 1fr 1fr;
-      background: var(--off);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 24px;
-    }
-    .compare-thead div {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-3);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .compare-thead div:last-child { text-align: center; color: var(--text-1); }
-    .compare-thead div:nth-child(2) { text-align: center; }
-
-    .compare-row {
-      display: grid;
-      grid-template-columns: 1.6fr 1fr 1fr;
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border);
-      align-items: center;
-      transition: background 0.15s;
-    }
-    .compare-row:last-child { border-bottom: none; }
-    .compare-row:hover { background: #FAFAF8; }
-
-    .compare-label {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-2);
-    }
-    .compare-cell {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.82rem;
-    }
-    .c-no {
-      color: var(--text-3);
-      font-size: 1.1rem;
-    }
-    .c-yes {
-      color: #16A34A;
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-    .c-txt-no {
-      color: var(--text-3);
-      font-size: 0.8rem;
-    }
-    .c-txt-yes {
-      color: var(--text-1);
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    /* ═══════════════════════════════════════
-       FINAL CTA
-    ═══════════════════════════════════════ */
-    #cta {
-      padding: 120px 0;
-      background: var(--white);
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-    .cta-heading {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: var(--text-1);
-      max-width: 640px;
-      margin: 16px auto 20px;
-    }
-    .cta-sub {
-      font-size: 1rem;
-      color: var(--text-3);
-      line-height: 1.7;
-      max-width: 480px;
-      margin: 0 auto 36px;
-    }
-
-    /* ═══════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════ */
-    footer {
-      background: var(--white);
-      border-top: 1px solid var(--border);
-      padding: 32px 0;
-    }
-    footer .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 0.875rem;
-      color: var(--text-1);
-      text-decoration: none;
-    }
-    .footer-logo-mark {
-      width: 24px; height: 24px;
-      background: var(--text-1);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 11px; font-weight: 900;
-    }
-    .footer-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-    .footer-links a {
-      text-decoration: none;
-      font-size: 0.82rem;
-      color: var(--text-3);
-      transition: color 0.15s;
-    }
-    .footer-links a:hover { color: var(--text-1); }
-    .footer-copy {
-      font-size: 0.78rem;
-      color: var(--text-3);
-    }
-    @media(max-width:640px){
-      footer .container { flex-direction: column; align-items: flex-start; }
-      .footer-links { gap: 16px; flex-wrap: wrap; }
-    }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0E1013; }
+    ::-webkit-scrollbar-thumb { background: #242833; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #0062FF; }
   </style>
 </head>
-<body>
+<body class="selection:bg-electric-blue selection:text-white font-sans antialiased overflow-x-hidden bg-grid-subtle">
+  
+  <div id="root"></div>
 
-<!-- ══════════════════════════════════════
-     NAVBAR
-══════════════════════════════════════ -->
-<header id="nav">
-  <div class="container">
-    <a class="nav-brand" href="#">
-      <div class="nav-logo-mark">V</div>
-      Viva Simulator
-    </a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#how">How it Works</a></li>
-      <li><a href="#compare">Why Us</a></li>
-    </ul>
-    <div class="nav-actions">
-      <a href="#features" class="btn btn-outline">Explore Features</a>
-      <a href="#cta" class="btn btn-dark">Start Practising</a>
-    </div>
-  </div>
-</header>
+  <!-- Interactive React Application -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
 
-<!-- ══════════════════════════════════════
-     SECTION 1 — HERO
-══════════════════════════════════════ -->
-<section id="hero">
-  <div class="container">
+    // Interactive Minimal Particle Network in Sand & Electric Blue
+    const InteractiveCanvas = () => {
+      const canvasRef = useRef(null);
 
-    <!-- LEFT: Copy -->
-    <div class="hero-left reveal">
-      <div class="hero-pill">
-        <span class="pill-label">AI-Powered Viva Preparation</span>
-      </div>
-      <h1 class="hero-title">Prepare Smarter.<br>Present With Confidence.</h1>
-      <p class="hero-desc">
-        An AI-powered viva preparation platform that helps students understand their
-        projects, practise technical questions, and improve their confidence before
-        the actual viva.
-      </p>
-      <div class="hero-cta">
-        <a href="#cta" class="btn btn-dark btn-lg">Start Practising</a>
-        <a href="#features" class="btn btn-outline btn-lg">Explore Features</a>
-      </div>
-      <div class="hero-trust">
-        <span class="hero-trust-dot"></span>
-        Powered by RAG-based AI &nbsp;·&nbsp; Adapts to your project
-      </div>
-    </div>
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let animationFrameId;
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
 
-    <!-- RIGHT: Mock UI Window -->
-    <div class="hero-visual reveal" style="transition-delay:0.15s;">
-      <div class="mock-window">
-        <div class="mock-titlebar">
-          <div class="mock-dots">
-            <span></span><span></span><span></span>
+        const handleResize = () => {
+          if (!canvas) return;
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', handleResize);
+
+        const mouse = { x: width / 2, y: height / 2, radius: 140 };
+        const handleMouseMove = (e) => {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+
+        const particles = [];
+        const count = Math.min(width > 768 ? 48 : 20, 60);
+
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 1.6 + 0.6,
+            color: Math.random() > 0.8 ? '#0062FF' : '#EAE3D2',
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35,
+            baseAlpha: Math.random() * 0.35 + 0.15
+          });
+        }
+
+        const render = () => {
+          ctx.clearRect(0, 0, width, height);
+
+          // Subtle connection traces
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 110) {
+                const alpha = (1 - dist / 110) * 0.12;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(234, 227, 210, ${alpha})`;
+                ctx.lineWidth = 0.65;
+                ctx.stroke();
+              }
+            }
+          }
+
+          particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+
+            const dx = mouse.x - p.x;
+            const dy = mouse.y - p.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < mouse.radius) {
+              const force = (mouse.radius - dist) / mouse.radius;
+              p.x -= (dx / dist) * force * 0.9;
+              p.y -= (dy / dist) * force * 0.9;
+            }
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.baseAlpha;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          });
+
+          animationFrameId = requestAnimationFrame(render);
+        };
+
+        render();
+
+        return () => {
+          window.removeEventListener('resize', handleResize);
+          window.removeEventListener('mousemove', handleMouseMove);
+          cancelAnimationFrame(animationFrameId);
+        };
+      }, []);
+
+      return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0 opacity-40" />;
+    };
+
+    // Minimal Navigation Bar
+    const Navbar = () => {
+      const [scrolled, setScrolled] = useState(false);
+      const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+      useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      return (
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-[#0E1013]/90 backdrop-blur-md border-b border-sand-200/10 py-3.5 shadow-xl shadow-black/30' : 'bg-transparent py-5'
+        }`}>
+          <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            {/* Logo */}
+            <a href="#" className="flex items-center gap-3 group">
+              <div className="w-8 h-8 rounded-lg bg-charcoal-800 border border-sand-200/15 flex items-center justify-center font-mono font-semibold text-xs text-sand-100 group-hover:border-electric-blue transition-colors">
+                VS
+              </div>
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-base text-sand-100 tracking-tight flex items-center gap-2">
+                  Viva Simulator
+                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
+                </span>
+                <span className="text-[10px] text-sand-muted font-mono tracking-wider uppercase">
+                  Practice • Improve • Ready
+                </span>
+              </div>
+            </a>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-7">
+              <a href="#about" className="text-xs font-medium text-sand-300 hover:text-sand-100 transition-colors">About</a>
+              <a href="#loop" className="text-xs font-medium text-sand-300 hover:text-sand-100 transition-colors">Continuous Loop</a>
+              <a href="#simulator" className="text-xs font-medium text-sand-300 hover:text-white transition-colors flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
+                Interactive Simulator
+              </a>
+              <a href="#features" className="text-xs font-medium text-sand-300 hover:text-sand-100 transition-colors">Capabilities</a>
+              <a href="#comparison" className="text-xs font-medium text-sand-300 hover:text-sand-100 transition-colors">Evaluation</a>
+              <a href="#vision" className="text-xs font-medium text-sand-300 hover:text-sand-100 transition-colors">Vision</a>
+            </nav>
+
+            {/* Action Button */}
+            <div className="hidden md:flex items-center gap-4">
+              <a 
+                href="#simulator" 
+                className="px-4 py-2 rounded-lg text-xs font-semibold tracking-wide text-white bg-electric-blue hover:bg-electric-blueHover transition-all duration-200 shadow-sm shadow-electric-blue/30 active:translate-y-0.5"
+              >
+                Launch Mock Viva
+              </a>
+            </div>
+
+            {/* Mobile Menu Trigger */}
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+              className="md:hidden text-sand-300 hover:text-white p-2"
+              aria-label="Toggle Navigation"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
-          <div class="mock-url">vivasimulator.app &nbsp;/&nbsp; mock-viva</div>
-        </div>
-        <div class="mock-body">
-          <div class="mock-header">
-            <span class="mock-session-label">Mock Viva · Session 3 of 5</span>
-            <span class="mock-badge">● Live Session</span>
-          </div>
-          <div class="mock-question-card">
-            <div class="mock-q-label">Question 02 / 08</div>
-            <div class="mock-q-text">
-              Explain how your system handles data retrieval using the RAG pipeline. What are the key components involved?
+
+          {/* Mobile dropdown */}
+          {mobileMenuOpen && (
+            <div className="md:hidden bg-charcoal-900 border-b border-sand-200/10 px-6 py-5 flex flex-col gap-4">
+              <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-xs font-medium text-sand-300">About</a>
+              <a href="#loop" onClick={() => setMobileMenuOpen(false)} className="text-xs font-medium text-sand-300">Continuous Loop</a>
+              <a href="#simulator" onClick={() => setMobileMenuOpen(false)} className="text-xs font-medium text-electric-light">Interactive Simulator</a>
+              <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-xs font-medium text-sand-300">Capabilities</a>
+              <a href="#comparison" onClick={() => setMobileMenuOpen(false)} className="text-xs font-medium text-sand-300">Evaluation</a>
+              <a href="#simulator" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-2.5 rounded-lg bg-electric-blue font-semibold text-xs text-white">
+                Launch Mock Viva
+              </a>
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    // Hero Section with Clean Typography & Real-time Live Simulator Widget
+    const Hero = () => {
+      const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+      const [userAnswer, setUserAnswer] = useState("");
+      const [isAnalyzing, setIsAnalyzing] = useState(false);
+      const [evaluationResult, setEvaluationResult] = useState(null);
+
+      const sampleQuestions = [
+        {
+          id: 1,
+          topic: "RAG Pipeline & Embeddings",
+          question: "How does your system prevent hallucination during knowledge retrieval from student project documentation?",
+          sampleGood: "We implement cross-encoder reranking after dense vector retrieval, combined with strict context window grounding and temperature=0.1."
+        },
+        {
+          id: 2,
+          topic: "Scalability & Vector DB",
+          question: "Why did you choose your specific indexing scheme over traditional relational full-text search?",
+          sampleGood: "Traditional BM25 matches exact lexical tokens but fails on conceptual synonyms like 'latency' vs 'response delay'. Vector embeddings preserve semantic intent."
+        },
+        {
+          id: 3,
+          topic: "Adaptive Difficulty Engine",
+          question: "If a student answers poorly across initial questions, how does the system adjust the viva path?",
+          sampleGood: "The state machine steps back from synthesis/evaluation questions to foundational comprehension, flagging that node in the knowledge gap ledger."
+        }
+      ];
+
+      const currentQ = sampleQuestions[activeQuestionIndex];
+
+      const handleEvaluate = () => {
+        if (!userAnswer.trim()) return;
+        setIsAnalyzing(true);
+        setTimeout(() => {
+          setIsAnalyzing(false);
+          const wordCount = userAnswer.trim().split(/\s+/).length;
+          const score = Math.min(95, Math.max(70, Math.floor(75 + (wordCount * 0.75))));
+          setEvaluationResult({
+            score: score,
+            clarity: score > 85 ? "Authoritative" : "Satisfactory",
+            feedback: score > 85 
+              ? "Crisp, concise technical articulation. Examiner confidence rating: 9.4/10."
+              : "Valid conceptual foundation. Recommendation: Bolster exact latency and resource trade-offs.",
+            detectedGaps: score > 85 ? [] : ["Quantitative boundary metrics", "Failure domain recovery plan"]
+          });
+        }, 1000);
+      };
+
+      const handleInsertSample = () => {
+        setUserAnswer(currentQ.sampleGood);
+      };
+
+      return (
+        <section className="relative pt-32 pb-20 lg:pt-36 lg:pb-28 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+              
+              {/* Left Column */}
+              <div className="lg:col-span-7 flex flex-col items-start">
+                
+                {/* Pill Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-charcoal-850 border border-sand-200/15 text-sand-200 text-xs font-mono mb-6">
+                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
+                  <span className="text-[11px] uppercase tracking-wider">AI-Powered Viva Preparation Platform</span>
+                </div>
+
+                {/* Main Headline */}
+                <h1 className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl text-sand-50 tracking-tighter leading-[1.08] mb-6">
+                  Bridge the gap between <br/>
+                  <span className="text-sand-300 border-b border-sand-400/40 pb-1">
+                    building a project
+                  </span> <br/>
+                  and defending it.
+                </h1>
+
+                {/* Description */}
+                <p className="text-base sm:text-lg text-sand-muted leading-relaxed max-w-xl mb-8 font-normal">
+                  An adaptive platform that indexes your project documentation, generates rigorous examiner questions, diagnoses technical blindspots, and prepares you for your final examination.
+                </p>
+
+                {/* Actions */}
+                <div className="flex flex-wrap items-center gap-3.5 w-full sm:w-auto mb-10">
+                  <a 
+                    href="#simulator" 
+                    className="w-full sm:w-auto px-6 py-3 rounded-lg text-xs font-semibold tracking-wide text-white bg-electric-blue hover:bg-electric-blueHover transition-all flex items-center justify-center gap-2 shadow-sm shadow-electric-blue/20"
+                  >
+                    <span>Launch Interactive Viva</span>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
+                  <a 
+                    href="#loop" 
+                    className="w-full sm:w-auto px-5 py-3 rounded-lg text-xs font-semibold text-sand-200 hover:text-white bg-charcoal-850 hover:bg-charcoal-800 border border-sand-200/10 transition-all flex items-center justify-center gap-2"
+                  >
+                    <span>Continuous Feedback Loop</span>
+                  </a>
+                </div>
+
+                {/* Proof Metrics */}
+                <div className="grid grid-cols-3 gap-6 pt-6 border-t border-sand-200/10 w-full max-w-lg">
+                  <div>
+                    <div className="font-mono font-bold text-xl text-sand-100">100%</div>
+                    <div className="text-[11px] text-sand-muted font-medium mt-0.5">Project Grounded</div>
+                  </div>
+                  <div>
+                    <div className="font-mono font-bold text-xl text-electric-light">RAG</div>
+                    <div className="text-[11px] text-sand-muted font-medium mt-0.5">Retrieval Engine</div>
+                  </div>
+                  <div>
+                    <div className="font-mono font-bold text-xl text-sand-200">Adaptive</div>
+                    <div className="text-[11px] text-sand-muted font-medium mt-0.5">Examiner Loop</div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column: Interactive Terminal Preview */}
+              <div className="lg:col-span-5 relative">
+                
+                {/* Terminal Card */}
+                <div className="charcoal-card rounded-xl p-5 border border-sand-200/15">
+                  
+                  {/* Terminal Header */}
+                  <div className="flex items-center justify-between pb-3.5 border-b border-sand-200/10 mb-4">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-charcoal-700 inline-block"></span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-charcoal-700 inline-block"></span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-charcoal-700 inline-block"></span>
+                      <span className="text-[11px] font-mono text-sand-muted ml-2">Session_RAG#084</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
+                      <span className="text-[10px] font-mono text-sand-300 uppercase tracking-wider">Active Viva</span>
+                    </div>
+                  </div>
+
+                  {/* Question Box */}
+                  <div className="bg-charcoal-900 border border-sand-200/10 rounded-lg p-3.5 mb-3.5">
+                    <div className="flex items-center justify-between text-[11px] text-electric-light font-mono mb-1.5">
+                      <span>QUESTION {activeQuestionIndex + 1} OF 3</span>
+                      <span className="text-sand-muted uppercase text-[10px]">{currentQ.topic}</span>
+                    </div>
+                    <p className="text-xs text-sand-100 font-normal leading-relaxed">
+                      "{currentQ.question}"
+                    </p>
+                  </div>
+
+                  {/* Answer Input Area */}
+                  <div className="mb-3.5">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-[11px] text-sand-muted font-mono uppercase">Student Defense:</label>
+                      <button 
+                        onClick={handleInsertSample}
+                        className="text-[11px] text-sand-200 hover:text-white underline transition-colors"
+                      >
+                        Insert Model Defense
+                      </button>
+                    </div>
+                    <textarea
+                      rows={3}
+                      value={userAnswer}
+                      onChange={(e) => setUserAnswer(e.target.value)}
+                      placeholder="Articulate your technical rationale..."
+                      className="w-full bg-charcoal-950 border border-sand-200/10 rounded-lg p-3 text-xs text-sand-100 placeholder:text-sand-muted/50 focus:outline-none focus:border-sand-300 transition-all font-sans"
+                    />
+                  </div>
+
+                  {/* Actions & Question Switcher */}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-1">
+                      {sampleQuestions.map((q, idx) => (
+                        <button
+                          key={q.id}
+                          onClick={() => {
+                            setActiveQuestionIndex(idx);
+                            setUserAnswer("");
+                            setEvaluationResult(null);
+                          }}
+                          className={`w-6 h-6 rounded text-xs font-mono font-medium transition-all ${
+                            activeQuestionIndex === idx
+                              ? 'bg-sand-200 text-charcoal-950 font-bold'
+                              : 'bg-charcoal-800 text-sand-muted hover:text-sand-200'
+                          }`}
+                        >
+                          {idx + 1}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={handleEvaluate}
+                      disabled={isAnalyzing || !userAnswer.trim()}
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                        !userAnswer.trim()
+                          ? 'bg-charcoal-800 text-sand-muted/40 cursor-not-allowed'
+                          : 'bg-electric-blue hover:bg-electric-blueHover text-white shadow-sm'
+                      }`}
+                    >
+                      {isAnalyzing ? (
+                        <span>Analyzing...</span>
+                      ) : (
+                        <span>Evaluate Defense →</span>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Evaluation Drawer */}
+                  {evaluationResult && (
+                    <div className="mt-3.5 pt-3.5 border-t border-sand-200/10">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[11px] font-mono text-sand-200 uppercase tracking-wider">Evaluation Scorecard</span>
+                        <span className="text-xs font-mono font-bold text-electric-light">
+                          {evaluationResult.score} / 100
+                        </span>
+                      </div>
+                      <p className="text-xs text-sand-300 leading-relaxed mb-2 font-normal">
+                        {evaluationResult.feedback}
+                      </p>
+                      {evaluationResult.detectedGaps.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5">
+                          <span className="text-[10px] text-sand-muted font-mono uppercase">Flagged:</span>
+                          {evaluationResult.detectedGaps.map((gap, i) => (
+                            <span key={i} className="text-[10px] px-2 py-0.5 rounded bg-charcoal-900 border border-sand-200/15 text-sand-300">
+                              {gap}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                </div>
+
+              </div>
+
             </div>
           </div>
-          <div class="mock-answer-area">
-            <span class="mock-answer-placeholder">The RAG pipeline first embeds the query using...</span>
-            <span class="mock-cursor"></span>
-          </div>
-          <div class="mock-footer">
-            <div class="mock-score-row">
-              <div class="mock-score-chip">Score: 76%</div>
-              <div class="mock-score-chip">Gaps: 2</div>
+        </section>
+      );
+    };
+
+    // 4-Step Continuous Feedback Loop Section (Directly from PPT Objectives)
+    const ContinuousFeedbackLoop = () => {
+      const [activeStep, setActiveStep] = useState(1);
+
+      const steps = [
+        {
+          num: "01",
+          title: "Project Understanding",
+          desc: "Process project materials (reports, architecture, documentation) into a searchable knowledge base using vector embeddings.",
+          details: "Extracts architectural constraints, component interactions, and library choices to establish project-specific context.",
+        },
+        {
+          num: "02",
+          title: "Assessment & Question Generation",
+          desc: "Generate project-specific viva questions, evaluate student answers in real-time, and adapt difficulty based on response strength.",
+          details: "Simulates varied examiner scrutiny: architectural validity, failure modes, and performance trade-offs.",
+        },
+        {
+          num: "03",
+          title: "Knowledge Gaps & Training",
+          desc: "Identify weak concepts, imprecise assumptions, and provide structured explanations and targeted practice drills.",
+          details: "Categorizes conceptual deficiencies: missing trade-off justification, error handling ambiguity, or weak boundary analysis.",
+        },
+        {
+          num: "04",
+          title: "Reassessment & Progress Tracking",
+          desc: "Re-viva weak concepts, compare performance trends, and track mastery curves across topics until exam readiness is achieved.",
+          details: "Executes follow-up verification drills on previously flagged concepts to ensure comprehensive comprehension.",
+        }
+      ];
+
+      return (
+        <section id="loop" className="py-20 bg-charcoal-900 border-y border-sand-200/10">
+          <div className="max-w-7xl mx-auto px-6">
+            
+            {/* Header */}
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-sand-300 px-2.5 py-0.5 rounded bg-charcoal-800 border border-sand-200/10">
+                Core Architecture & Workflow
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-sand-50 mt-3 mb-2 tracking-tight">
+                The Continuous Feedback Loop
+              </h2>
+              <p className="text-sand-muted text-sm leading-relaxed">
+                Adapts assessment and training dynamically based on student mastery curves.
+              </p>
             </div>
-            <button class="mock-submit">Submit Answer →</button>
+
+            {/* Stepper Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+              {steps.map((s, idx) => (
+                <div
+                  key={s.num}
+                  onClick={() => setActiveStep(idx + 1)}
+                  className={`charcoal-card p-5 rounded-xl cursor-pointer transition-all duration-200 relative ${
+                    activeStep === idx + 1
+                      ? 'border-sand-300 ring-1 ring-sand-300/30 bg-charcoal-850 -translate-y-1'
+                      : 'hover:border-sand-200/20'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono font-bold text-base text-electric-light">
+                      {s.num}
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-sand-muted/50"></span>
+                  </div>
+
+                  <h3 className="font-display font-semibold text-sm text-sand-100 mb-2 leading-snug">
+                    {s.title}
+                  </h3>
+                  
+                  <p className="text-xs text-sand-muted leading-relaxed mb-3 font-normal">
+                    {s.desc}
+                  </p>
+
+                  <div className="pt-2.5 border-t border-sand-200/10 flex items-center justify-between text-[11px] text-sand-muted">
+                    <span>Inspect Step {s.num}</span>
+                    <span className="text-sand-300 font-mono">→</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Interactive Inspector */}
+            <div className="mt-6 charcoal-card rounded-xl p-5 border border-sand-200/15 bg-charcoal-850">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <div className="text-[10px] font-mono text-electric-light uppercase tracking-wider mb-1">
+                    ACTIVE STAGE // STEP {steps[activeStep - 1].num}
+                  </div>
+                  <h4 className="font-display font-bold text-lg text-sand-100">
+                    {steps[activeStep - 1].title}
+                  </h4>
+                  <p className="text-xs text-sand-muted mt-1 max-w-2xl leading-relaxed">
+                    {steps[activeStep - 1].details}
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-charcoal-800 border border-sand-200/10 text-xs text-sand-200 font-mono">
+                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
+                  Active Loop
+                </div>
+              </div>
+            </div>
+
           </div>
+        </section>
+      );
+    };
+
+    // Full Interactive Viva Simulator Sandbox
+    const SimulatorSandbox = () => {
+      const [projectType, setProjectType] = useState("ai");
+      const [difficulty, setDifficulty] = useState("External");
+      const [customAnswer, setCustomAnswer] = useState("");
+      const [isGrading, setIsGrading] = useState(false);
+      const [result, setResult] = useState(null);
+
+      const projects = {
+        ai: {
+          title: "Autonomous Drone Navigation with Computer Vision",
+          stack: "PyTorch • YOLOv8 • ROS2 • TensorRT",
+          q: "Why did you choose YOLOv8 nano over Faster R-CNN given the strict battery & compute constraints on your UAV payload?",
+          goodAnswer: "YOLOv8n runs at ~85 FPS on Jetson Nano with TensorRT FP16 quantization under a 7-watt power envelope, whereas Faster R-CNN's two-stage regional proposal network requires >200ms latency, causing obstacle collision at velocities >3 m/s."
+        },
+        cloud: {
+          title: "Distributed Microservices Banking Gateway",
+          stack: "Go • Apache Kafka • Redis • gRPC",
+          q: "How does your transaction ledger prevent double-spending when a network partition separates two Kafka broker clusters?",
+          goodAnswer: "We enforce the Raft consensus algorithm inside Kafka Kraft mode with acks=all and idempotent producers. When a partition isolates a broker without a quorum majority, writes are rejected immediately with backoff."
+        },
+        health: {
+          title: "Privacy-Preserving EHR System via Zero-Knowledge",
+          stack: "Rust • SnarkJS • Ethereum • IPFS",
+          q: "What prevents a malicious hospital worker from inferring patient diagnosis through differential metadata leakages in your zero-knowledge circuit?",
+          goodAnswer: "The circom circuit only exposes blinded zk-SNARK commitments (Poseidon hash hashes). Public inputs strictly contain Pedersen blinding salts, leaving diagnoses zero-knowledge verified without patient identity leakage."
+        }
+      };
+
+      const curr = projects[projectType];
+
+      const runGrading = () => {
+        if (!customAnswer.trim()) return;
+        setIsGrading(true);
+        setTimeout(() => {
+          setIsGrading(false);
+          const isModel = customAnswer.length > 100;
+          setResult({
+            overall: isModel ? 94 : 72,
+            metrics: {
+              clarity: isModel ? 95 : 74,
+              examinerImpression: isModel ? "Authoritative Defense" : "Requires Follow-up"
+            },
+            strengths: isModel 
+              ? ["Quantitative metrics cited directly", "Clean hardware constraint justification", "Architectural trade-offs articulated"]
+              : ["Understands core problem domain", "Sound fundamental intuition"],
+            blindspots: isModel
+              ? ["Zero major deficiencies. Ready for final presentation."]
+              : ["Lacks concrete latency benchmark figures", "Omitted failure domain degradation strategy"]
+          });
+        }, 1100);
+      };
+
+      return (
+        <section id="simulator" className="py-20 relative overflow-hidden bg-charcoal-950">
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            
+            {/* Header */}
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-sand-300 px-2.5 py-0.5 rounded bg-charcoal-850 border border-sand-200/10">
+                Interactive Sandbox
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-4xl text-sand-50 mt-3 mb-2 tracking-tight">
+                Simulate a Viva in 60 Seconds
+              </h2>
+              <p className="text-sand-muted text-sm">
+                Select a simulated project or test your own answers against realistic examiner questioning.
+              </p>
+            </div>
+
+            {/* Sandbox Shell */}
+            <div className="charcoal-card rounded-xl p-6 sm:p-8 border border-sand-200/15 bg-charcoal-900">
+              
+              {/* Step 1: Project Picker & Configuration */}
+              <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-sand-200/10 mb-6">
+                <div>
+                  <label className="text-[11px] font-mono text-sand-muted uppercase tracking-wider block mb-2">
+                    1. Select Simulated Project:
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { key: 'ai', label: 'Drone Vision (Edge AI)' },
+                      { key: 'cloud', label: 'FinTech Gateway (Distributed)' },
+                      { key: 'health', label: 'ZK-EHR System (Cryptography)' },
+                    ].map(p => (
+                      <button
+                        key={p.key}
+                        onClick={() => {
+                          setProjectType(p.key);
+                          setCustomAnswer("");
+                          setResult(null);
+                        }}
+                        className={`px-3 py-1.5 rounded text-xs font-mono transition-all ${
+                          projectType === p.key
+                            ? 'bg-sand-200 text-charcoal-950 font-bold'
+                            : 'bg-charcoal-800 text-sand-muted hover:text-sand-200 border border-sand-200/10'
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-mono text-sand-muted uppercase tracking-wider block mb-2">
+                    2. Examiner Scrutiny:
+                  </label>
+                  <div className="flex gap-1.5">
+                    {['Advisory Guide', 'External Examiner', 'Strict Professor'].map(d => (
+                      <button
+                        key={d}
+                        onClick={() => setDifficulty(d)}
+                        className={`px-2.5 py-1 rounded text-xs font-mono transition-all ${
+                          difficulty === d
+                            ? 'bg-electric-blue text-white'
+                            : 'bg-charcoal-800 text-sand-muted hover:text-sand-200 border border-sand-200/10'
+                        }`}
+                      >
+                        {d}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Active Project Card */}
+              <div className="bg-charcoal-850 rounded-lg p-5 border border-sand-200/10 mb-5">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                  <h3 className="font-display font-semibold text-base text-sand-100">{curr.title}</h3>
+                  <span className="text-[11px] font-mono text-sand-muted">{curr.stack}</span>
+                </div>
+                
+                <div className="mt-3 p-3.5 rounded bg-charcoal-950 border border-sand-200/10">
+                  <span className="text-[10px] font-mono text-electric-light uppercase tracking-wider block mb-1">
+                    {difficulty} Question:
+                  </span>
+                  <p className="text-xs text-sand-100 font-normal leading-relaxed">
+                    "{curr.q}"
+                  </p>
+                </div>
+              </div>
+
+              {/* Answer Input Area */}
+              <div className="mb-5">
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-mono text-sand-muted uppercase">
+                    Defend Your Architectural Decision:
+                  </label>
+                  <button
+                    onClick={() => setCustomAnswer(curr.goodAnswer)}
+                    className="text-xs text-sand-200 hover:text-white underline font-medium"
+                  >
+                    Paste Model Defense
+                  </button>
+                </div>
+
+                <textarea
+                  rows={4}
+                  value={customAnswer}
+                  onChange={(e) => setCustomAnswer(e.target.value)}
+                  placeholder="Explain why this approach satisfies both performance and constraints..."
+                  className="w-full bg-charcoal-950 border border-sand-200/10 rounded-lg p-3 text-xs text-sand-100 placeholder:text-sand-muted/50 focus:outline-none focus:border-sand-300 transition-all font-sans"
+                />
+              </div>
+
+              {/* Evaluate Trigger */}
+              <div className="flex items-center justify-end">
+                <button
+                  onClick={runGrading}
+                  disabled={isGrading || !customAnswer.trim()}
+                  className={`px-5 py-2.5 rounded-lg font-semibold text-xs text-white transition-all duration-200 flex items-center gap-2 ${
+                    !customAnswer.trim()
+                      ? 'bg-charcoal-800 text-sand-muted/40 cursor-not-allowed'
+                      : 'bg-electric-blue hover:bg-electric-blueHover shadow-sm'
+                  }`}
+                >
+                  {isGrading ? (
+                    <span>Evaluating Defense...</span>
+                  ) : (
+                    <span>Submit for Viva Evaluation →</span>
+                  )}
+                </button>
+              </div>
+
+              {/* Detailed Result Card */}
+              {result && (
+                <div className="mt-6 pt-6 border-t border-sand-200/10 animate-fadeIn">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    
+                    {/* Score */}
+                    <div className="md:col-span-4 bg-charcoal-850 rounded-lg p-5 border border-sand-200/10 text-center flex flex-col items-center justify-center">
+                      <div className="text-[10px] text-sand-muted font-mono uppercase mb-1">Defense Score</div>
+                      <div className="text-4xl font-mono font-bold text-sand-100">
+                        {result.overall}%
+                      </div>
+                      <span className="inline-block mt-2 px-2.5 py-0.5 rounded text-[11px] font-mono text-sand-200 bg-charcoal-950 border border-sand-200/10">
+                        {result.metrics.examinerImpression}
+                      </span>
+                    </div>
+
+                    {/* Breakdown */}
+                    <div className="md:col-span-8 space-y-3">
+                      <div>
+                        <div className="text-[11px] font-mono text-sand-200 uppercase tracking-wider mb-1">
+                          Technical Strengths:
+                        </div>
+                        <ul className="text-xs text-sand-muted space-y-1">
+                          {result.strengths.map((s, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                              <span className="text-electric-light font-bold">✓</span>
+                              {s}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <div className="text-[11px] font-mono text-sand-200 uppercase tracking-wider mb-1">
+                          Flagged Blindspots:
+                        </div>
+                        <ul className="text-xs text-sand-muted space-y-1">
+                          {result.blindspots.map((b, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                              <span className="text-sand-400 font-bold">•</span>
+                              {b}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+          </div>
+        </section>
+      );
+    };
+
+    // Features Bento Grid (PPT Key Takeaways & Modules)
+    const FeaturesGrid = () => {
+      const features = [
+        {
+          num: "01",
+          tag: "RAG Engine",
+          title: "Project-Aware Knowledge Ingestion",
+          desc: "Parses PDF reports, design blueprints, and source repositories into vector knowledge bases. Never asks unrelated trivia."
+        },
+        {
+          num: "02",
+          tag: "Adaptive AI",
+          title: "Dynamic Examiner Personalities",
+          desc: "Simulates multiple panel personas: from supportive university guides to rigorous external industry assessors."
+        },
+        {
+          num: "03",
+          tag: "Diagnostic",
+          title: "Pinpoint Knowledge Gap Detection",
+          desc: "Diagnoses whether an error stems from conceptual misunderstanding, missing quantitative data, or delivery pacing."
+        },
+        {
+          num: "04",
+          tag: "Interactive",
+          title: "Real-time Voice & Text Viva Simulation",
+          desc: "Practise answering orally or via text under timed conditions with instant feedback on clarity, brevity, and tone."
+        },
+        {
+          num: "05",
+          tag: "Analytics",
+          title: "Measurable Progress & Competency Scores",
+          desc: "Track mastery curves over multiple sessions with clear topic breakdowns: Architecture, Security, Edge Cases, Trade-offs."
+        },
+        {
+          num: "06",
+          tag: "Scaffolding",
+          title: "Targeted Re-Viva Drills",
+          desc: "Automatically revisits previously missed questions using socratic follow-up questions to lock in deep comprehension."
+        }
+      ];
+
+      return (
+        <section id="features" className="py-20 bg-charcoal-900 border-t border-sand-200/10">
+          <div className="max-w-7xl mx-auto px-6">
+            
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-sand-300 px-2.5 py-0.5 rounded bg-charcoal-800 border border-sand-200/10">
+                Core Capabilities
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-sand-50 mt-3 mb-2 tracking-tight">
+                Engineered for Complete Viva Mastery
+              </h2>
+              <p className="text-sand-muted text-sm">
+                Everything required to transform students from hesitant developers into authoritative technical presenters.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {features.map((f) => (
+                <div
+                  key={f.num}
+                  className="charcoal-card p-6 rounded-xl relative transition-all duration-200 charcoal-card-hover"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono font-bold text-sand-muted">
+                      {f.num}
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-charcoal-950 border border-sand-200/10 text-sand-300">
+                      {f.tag}
+                    </span>
+                  </div>
+
+                  <h3 className="font-display font-semibold text-sm text-sand-100 mb-2">
+                    {f.title}
+                  </h3>
+
+                  <p className="text-xs text-sand-muted leading-relaxed font-normal">
+                    {f.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+      );
+    };
+
+    // Traditional vs. Viva Simulator Comparison Table
+    const ComparisonSection = () => {
+      const rows = [
+        { feature: "Grounding in Your Actual Project", trad: "Generic generic textbook questions", vs: "100% RAG-retrieved from your code & doc" },
+        { feature: "Feedback Speed", trad: "Days later (or never before actual exam)", vs: "Instantaneous with line-item critique" },
+        { feature: "Examiner Adaptation", trad: "Rigid memorization checklist", vs: "Adapts dynamically to student depth" },
+        { feature: "Knowledge Gap Diagnostics", trad: "Vague 'needs improvement' comments", vs: "Explicit conceptual gap categorization" },
+        { feature: "Re-examination of Weak Spots", trad: "Rarely done before final defense", vs: "Automated continuous re-viva drills" },
+        { feature: "Availability & Stress Level", trad: "High anxiety mock once a semester", vs: "Unlimited low-pressure practice anytime" }
+      ];
+
+      return (
+        <section id="comparison" className="py-20 bg-charcoal-950 border-t border-sand-200/10">
+          <div className="max-w-5xl mx-auto px-6">
+            
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-sand-300 px-2.5 py-0.5 rounded bg-charcoal-850 border border-sand-200/10">
+                Evaluation Comparison
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-sand-50 mt-3 mb-2 tracking-tight">
+                Traditional Preparation vs. AI-Assisted Mastery
+              </h2>
+            </div>
+
+            <div className="charcoal-card rounded-xl overflow-hidden border border-sand-200/15">
+              <div className="grid grid-cols-12 bg-charcoal-850 p-4 border-b border-sand-200/10 font-mono text-[11px] uppercase tracking-wider text-sand-muted">
+                <div className="col-span-5 sm:col-span-4">Capability</div>
+                <div className="col-span-3 sm:col-span-4">Traditional Prep</div>
+                <div className="col-span-4 text-electric-light">Viva Simulator</div>
+              </div>
+
+              {rows.map((r, i) => (
+                <div 
+                  key={i}
+                  className={`grid grid-cols-12 p-3.5 sm:p-4 items-center text-xs border-b border-sand-200/5 hover:bg-sand-200/[0.02] transition-colors ${
+                    i % 2 === 0 ? 'bg-transparent' : 'bg-charcoal-900/50'
+                  }`}
+                >
+                  <div className="col-span-5 sm:col-span-4 font-medium text-sand-100 pr-2">
+                    {r.feature}
+                  </div>
+                  <div className="col-span-3 sm:col-span-4 text-sand-muted pr-2 flex items-center gap-1.5">
+                    <span className="text-sand-muted font-mono">•</span>
+                    <span className="text-xs">{r.trad}</span>
+                  </div>
+                  <div className="col-span-4 text-sand-200 font-medium flex items-center gap-1.5 text-xs">
+                    <span className="text-electric-light font-bold">✓</span>
+                    <span>{r.vs}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+      );
+    };
+
+    // Vision, Objectives & 5 Outcome Pillars (Directly from PPT Content)
+    const VisionAndPillars = () => {
+      const pillars = [
+        { name: "Intelligence", sub: "Learns and adapts", num: "01" },
+        { name: "Trust", sub: "Reliable and transparent", num: "02" },
+        { name: "Innovation", sub: "Built for the future", num: "03" },
+        { name: "Simplicity", sub: "Easy to use", num: "04" },
+        { name: "Impact", sub: "Better learners, stronger tomorrow", num: "05" }
+      ];
+
+      return (
+        <section id="vision" className="py-20 bg-charcoal-900 border-t border-sand-200/10">
+          <div className="max-w-7xl mx-auto px-6">
+            
+            {/* The Goal, The Solution, Our Vision Triad */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+              
+              <div className="charcoal-card p-6 rounded-xl border-t-2 border-t-sand-300">
+                <span className="text-[10px] font-mono text-sand-muted uppercase tracking-wider block mb-2">01 // Purpose</span>
+                <h3 className="font-display font-bold text-base text-sand-100 mb-2">The Goal</h3>
+                <p className="text-xs text-sand-muted leading-relaxed font-normal">
+                  Bridge the gap between building a project and confidently explaining it during high-stakes university and enterprise defenses.
+                </p>
+              </div>
+
+              <div className="charcoal-card p-6 rounded-xl border-t-2 border-t-electric-blue">
+                <span className="text-[10px] font-mono text-electric-light uppercase tracking-wider block mb-2">02 // Mechanism</span>
+                <h3 className="font-display font-bold text-base text-sand-100 mb-2">The Solution</h3>
+                <p className="text-xs text-sand-muted leading-relaxed font-normal">
+                  A continuous, AI-powered feedback loop that understands your project, identifies knowledge gaps, teaches and adapts until you're ready.
+                </p>
+              </div>
+
+              <div className="charcoal-card p-6 rounded-xl border-t-2 border-t-sand-400">
+                <span className="text-[10px] font-mono text-sand-muted uppercase tracking-wider block mb-2">03 // Long-term</span>
+                <h3 className="font-display font-bold text-base text-sand-100 mb-2">Our Vision</h3>
+                <p className="text-xs text-sand-muted leading-relaxed font-normal">
+                  Empower students to become confident, technically strong, and independent learners capable of standing behind their work.
+                </p>
+              </div>
+
+            </div>
+
+            {/* 5 Outcome Pillars */}
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-sand-300 px-2.5 py-0.5 rounded bg-charcoal-800 border border-sand-200/10">
+                Core Values
+              </span>
+              <h2 className="font-display font-bold text-2xl text-sand-50 mt-3 tracking-tight">
+                The Five Outcome Pillars
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+              {pillars.map((p) => (
+                <div
+                  key={p.name}
+                  className="charcoal-card p-5 rounded-xl text-center flex flex-col items-center justify-center hover:-translate-y-1 transition-transform"
+                >
+                  <span className="text-xs font-mono text-electric-light mb-1">{p.num}</span>
+                  <h4 className="font-display font-semibold text-xs text-sand-100">{p.name}</h4>
+                  <p className="text-[11px] text-sand-muted mt-1 leading-snug">{p.sub}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Editorial Quote */}
+            <div className="mt-14 text-center">
+              <div className="inline-block p-5 rounded-xl charcoal-card border border-sand-200/10 max-w-xl">
+                <p className="text-sm italic text-sand-200 font-normal">
+                  "Not just a tool, but a step towards <span className="text-sand-50 font-semibold not-italic">confident learners</span>."
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      );
+    };
+
+    // Final Call to Action
+    const FinalCTA = () => {
+      return (
+        <section className="py-20 relative overflow-hidden bg-charcoal-950 border-t border-sand-200/10">
+          <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-sand-300 px-2.5 py-0.5 rounded bg-charcoal-850 border border-sand-200/10">
+              Get Started
+            </span>
+
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-sand-50 mt-4 mb-3 tracking-tight">
+              Your Next Viva Starts Here.
+            </h2>
+
+            <p className="text-sm sm:text-base text-sand-muted max-w-lg mx-auto mb-8 leading-relaxed font-normal">
+              Understand every concept. Practise every answer. Defend every architectural trade-off before stepping into the examination.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="#simulator"
+                className="px-6 py-3 rounded-lg text-xs font-semibold tracking-wide text-white bg-electric-blue hover:bg-electric-blueHover transition-all shadow-sm"
+              >
+                Start Practicing Free →
+              </a>
+              <a
+                href="#loop"
+                className="px-5 py-3 rounded-lg text-xs font-semibold text-sand-200 hover:text-white bg-charcoal-850 hover:bg-charcoal-800 border border-sand-200/10 transition-all"
+              >
+                Workflow Details
+              </a>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // Footer
+    const Footer = () => {
+      return (
+        <footer className="py-10 bg-charcoal-950 border-t border-sand-200/10 text-sand-muted text-xs">
+          <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-2.5">
+              <div className="w-6 h-6 rounded bg-charcoal-800 border border-sand-200/10 flex items-center justify-center font-mono font-semibold text-sand-100 text-[10px]">
+                VS
+              </div>
+              <div className="font-display font-semibold text-sand-200 text-xs">Viva Simulator</div>
+            </div>
+
+            <div className="flex gap-5 text-[12px]">
+              <a href="#about" className="hover:text-sand-100 transition-colors">About</a>
+              <a href="#loop" className="hover:text-sand-100 transition-colors">Feedback Loop</a>
+              <a href="#simulator" className="hover:text-sand-100 transition-colors">Simulator</a>
+              <a href="#features" className="hover:text-sand-100 transition-colors">Capabilities</a>
+              <a href="#comparison" className="hover:text-sand-100 transition-colors">Evaluation</a>
+            </div>
+
+            <div className="font-mono text-[11px] text-sand-muted/80">
+              © 2026 Viva Simulator. Practice. Improve. Ready.
+            </div>
+          </div>
+        </footer>
+      );
+    };
+
+    // Root App Wrapper
+    const App = () => {
+      return (
+        <div className="min-h-screen relative flex flex-col bg-[#0E1013]">
+          <InteractiveCanvas />
+          <Navbar />
+          <main className="flex-1">
+            <Hero />
+            <ContinuousFeedbackLoop />
+            <SimulatorSandbox />
+            <FeaturesGrid />
+            <ComparisonSection />
+            <VisionAndPillars />
+            <FinalCTA />
+          </main>
+          <Footer />
         </div>
-      </div>
-    </div>
+      );
+    };
 
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     SECTION 2 — ABOUT
-══════════════════════════════════════ -->
-<section id="about">
-  <div class="container">
-
-    <!-- LEFT -->
-    <div class="about-left reveal">
-      <p class="section-eyebrow">About Viva Simulator</p>
-      <h2 class="section-heading about-heading">Understand Your Project.<br>Master Every Concept.</h2>
-      <p class="about-desc">
-        Most students can build a great project — but struggle to explain it under pressure
-        during a viva. Viva Simulator bridges that gap. It reads your project materials,
-        generates precise questions your examiner might ask, evaluates your answers, identifies
-        where your understanding is weak, and trains you until you can explain every concept
-        with clarity and confidence.
-      </p>
-    </div>
-
-    <!-- RIGHT: Stacked Cards -->
-    <div class="about-right reveal" style="transition-delay:0.1s;">
-      <div class="info-card">
-        <span class="info-card-num">01</span>
-        <div class="info-card-body">
-          <div class="info-card-title">Project Understanding</div>
-          <div class="info-card-desc">Upload your project report, code, or documentation. The AI processes and indexes it into a searchable knowledge base specific to your work.</div>
-        </div>
-      </div>
-      <div class="info-card">
-        <span class="info-card-num">02</span>
-        <div class="info-card-body">
-          <div class="info-card-title">Technical Questioning</div>
-          <div class="info-card-desc">Receive targeted, project-aware viva questions generated from your own materials — not generic textbook questions.</div>
-        </div>
-      </div>
-      <div class="info-card">
-        <span class="info-card-num">03</span>
-        <div class="info-card-body">
-          <div class="info-card-title">Performance Improvement</div>
-          <div class="info-card-desc">Get instant feedback on each answer. Track your progress, revisit weak areas, and build confidence session by session.</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     SECTION 3 — FEATURES
-══════════════════════════════════════ -->
-<section id="features">
-  <div class="container">
-    <div class="features-header reveal">
-      <p class="section-eyebrow">Core Features</p>
-      <h2 class="section-heading">Everything you need to prepare<br>for your next viva.</h2>
-      <p class="section-sub">Six focused capabilities, built specifically for project-based viva examinations.</p>
-    </div>
-    <div class="features-grid reveal" style="transition-delay:0.1s;">
-
-      <div class="feat-card">
-        <div class="feat-num">01 — Upload</div>
-        <div class="feat-title">Project Upload &amp; Analysis</div>
-        <div class="feat-desc">Upload your project report, documentation, or code. The system parses, embeds, and indexes your content into a knowledge base ready for assessment.</div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-num">02 — Generate</div>
-        <div class="feat-title">AI-Powered Viva Questions</div>
-        <div class="feat-desc">Questions are generated directly from your project using a RAG pipeline — not from textbooks. Every question is relevant to what you built.</div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-num">03 — Practise</div>
-        <div class="feat-title">Interactive Mock Viva</div>
-        <div class="feat-desc">Simulate a real viva experience. Answer questions, navigate difficulty levels, and practice responding under realistic conditions.</div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-num">04 — Evaluate</div>
-        <div class="feat-title">Answer Evaluation</div>
-        <div class="feat-desc">Each answer is evaluated for accuracy, depth and clarity. You receive structured feedback showing exactly where your explanation fell short.</div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-num">05 — Track</div>
-        <div class="feat-title">Performance Tracking</div>
-        <div class="feat-desc">View your scores across sessions. See which concepts are mastered and which need more attention — session by session, topic by topic.</div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-num">06 — Adapt</div>
-        <div class="feat-title">Personalized Practice</div>
-        <div class="feat-desc">The system identifies your knowledge gaps and re-focuses your practice sessions on weak areas, adapting difficulty as your mastery grows.</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     SECTION 4 — HOW IT WORKS
-══════════════════════════════════════ -->
-<section id="how">
-  <div class="container">
-    <div class="how-header reveal">
-      <p class="section-eyebrow">How It Works</p>
-      <h2 class="section-heading">From Project to Viva Ready.</h2>
-      <p class="section-sub">Four straightforward steps. One continuous feedback loop.</p>
-    </div>
-    <div class="how-steps reveal" style="transition-delay:0.1s;">
-      <div class="how-step">
-        <div class="how-step-num">01</div>
-        <div class="how-step-title">Upload Your Project</div>
-        <div class="how-step-desc">Share your project report, code or documentation with the platform.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num">02</div>
-        <div class="how-step-title">AI Understands Your Work</div>
-        <div class="how-step-desc">The system processes your materials and builds a knowledge base of your project.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num">03</div>
-        <div class="how-step-title">Start Your Mock Viva</div>
-        <div class="how-step-desc">Answer AI-generated questions tailored to your project. Get instant feedback.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num">04</div>
-        <div class="how-step-title">Review Your Performance</div>
-        <div class="how-step-desc">Track gaps, revisit weak concepts, and repeat until you're fully confident.</div>
-      </div>
-    </div>
-    <div class="reveal" style="transition-delay:0.2s;">
-      <div class="how-loop-note">
-        ↻ &nbsp; Continuous feedback loop — adapts to your mastery in real time
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     SECTION 5 — COMPARISON
-══════════════════════════════════════ -->
-<section id="compare">
-  <div class="container">
-    <div class="compare-header reveal">
-      <p class="section-eyebrow">Why Choose Viva Simulator</p>
-      <h2 class="section-heading">Traditional prep vs. AI-assisted prep.</h2>
-      <p class="section-sub" style="margin:16px auto 0;">See the difference an intelligent, project-aware system makes.</p>
-    </div>
-    <div class="compare-table reveal" style="transition-delay:0.1s;">
-      <div class="compare-thead">
-        <div>Capability</div>
-        <div style="text-align:center;">Traditional</div>
-        <div style="text-align:center;">Viva Simulator</div>
-      </div>
-
-      <div class="compare-row">
-        <span class="compare-label">Questions based on your project</span>
-        <span class="compare-cell"><span class="c-no">✕</span></span>
-        <span class="compare-cell"><span class="c-yes">✓</span></span>
-      </div>
-      <div class="compare-row">
-        <span class="compare-label">Instant answer feedback</span>
-        <span class="compare-cell"><span class="c-no">✕</span></span>
-        <span class="compare-cell"><span class="c-yes">✓</span></span>
-      </div>
-      <div class="compare-row">
-        <span class="compare-label">Identifies knowledge gaps automatically</span>
-        <span class="compare-cell"><span class="c-no">✕</span></span>
-        <span class="compare-cell"><span class="c-yes">✓</span></span>
-      </div>
-      <div class="compare-row">
-        <span class="compare-label">Adapts difficulty to your progress</span>
-        <span class="compare-cell"><span class="c-no">✕</span></span>
-        <span class="compare-cell"><span class="c-yes">✓</span></span>
-      </div>
-      <div class="compare-row">
-        <span class="compare-label">Available any time, any place</span>
-        <span class="compare-cell"><span class="c-txt-no">Limited</span></span>
-        <span class="compare-cell"><span class="c-txt-yes">Always available</span></span>
-      </div>
-      <div class="compare-row">
-        <span class="compare-label">Performance tracking over sessions</span>
-        <span class="compare-cell"><span class="c-no">✕</span></span>
-        <span class="compare-cell"><span class="c-yes">✓</span></span>
-      </div>
-      <div class="compare-row">
-        <span class="compare-label">Personalised practice plan</span>
-        <span class="compare-cell"><span class="c-no">✕</span></span>
-        <span class="compare-cell"><span class="c-yes">✓</span></span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     SECTION 6 — FINAL CTA
-══════════════════════════════════════ -->
-<section id="cta">
-  <div class="container">
-    <div class="reveal">
-      <p class="section-eyebrow">Get Started</p>
-      <h2 class="cta-heading">Your Next Viva Starts Here.</h2>
-      <p class="cta-sub">
-        Understand every concept. Practise every answer.
-        Walk into your viva with confidence.
-      </p>
-      <a href="#" class="btn btn-dark btn-lg">Start Your Viva Practice</a>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     FOOTER
-══════════════════════════════════════ -->
-<footer>
-  <div class="container">
-    <a class="footer-brand" href="#">
-      <div class="footer-logo-mark">V</div>
-      Viva Simulator
-    </a>
-    <ul class="footer-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#how">How it Works</a></li>
-      <li><a href="#compare">Why Us</a></li>
-      <li><a href="#cta">Get Started</a></li>
-    </ul>
-    <span class="footer-copy">© 2026 Viva Simulator. Practice. Improve. Be Ready.</span>
-  </div>
-</footer>
-
-<!-- ══════════════════════════════════════
-     JS — Scroll Reveal only
-══════════════════════════════════════ -->
-<script>
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-</script>
-
+    // Mount
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
 </body>
 </html>
